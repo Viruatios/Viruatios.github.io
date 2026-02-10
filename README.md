@@ -8,4 +8,4 @@ CuLoo's Homepage
 
 通过编写GitHub Actions workflow进行自动部署，相关教程：
 [通过 GitHub Pages 使用自定义工作流](https://docs.github.com/zh/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages) 和
-[Copilot编写的说明](file:/../.github/workflows/tutorial_GitHub_Actions.md)
+[Copilot编写的说明](./.github/workflows/tutorial_GitHub_Actions.md)
