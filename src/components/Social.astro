@@ -1,0 +1,24 @@
+---
+const { platform, username } = Astro.props;
+---
+
+{
+	platform === "GitHub" && (
+		<a href={`https://github.com/${username}`}>
+			<img
+				src="/GitHub_Invertocat_White.svg"
+				alt="GitHub"
+				width="24"
+				height="24"
+			/>
+		</a>
+	)
+}
+
+<style>
+	a {
+		display: inline-block;
+		padding: 0.5rem 0.5rem;
+		background-color: black;
+	}
+</style>

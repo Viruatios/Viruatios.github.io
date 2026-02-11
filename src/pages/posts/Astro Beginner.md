@@ -23,7 +23,7 @@ tags: ["astro", "blogging", "learning in public"]
 
 在第二天，在About CuLoo页面用上了Astro开头的JavaScript frontmatter。
 
-在第三天，先在About CuLoo页面上试了试定义单页样式，然后用上了通过CSS定义的全局样式。
+在第三天，先在About CuLoo页面上试了试定义单页样式，然后用上了通过CSS定义的全局样式。学着重构了HeaderNavigation组件，新增而且调用了Header组件、Footer组件、Social组件等等。
 
 ## 我将做什么
 
