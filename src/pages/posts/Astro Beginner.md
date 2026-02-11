@@ -13,7 +13,7 @@ tags: ["astro", "blogging", "learning in public"]
 
 最初在：2026.02.10
 
-最近在：2026.02.11
+最近在：2026.02.12
 
 ## 我做了什么
 
@@ -22,6 +22,8 @@ tags: ["astro", "blogging", "learning in public"]
 在之前，我已经完成了一个最小可用版本。在此基础上，我又增添了about页面，又增添了blog页面。现在，我正在编写这篇markdown文本，作为我的第一篇博客文章。
 
 在第二天，在About CuLoo页面用上了Astro开头的JavaScript frontmatter。
+
+在第三天，先在About CuLoo页面上试了试定义单页样式，然后用上了通过CSS定义的全局样式。
 
 ## 我将做什么
 
