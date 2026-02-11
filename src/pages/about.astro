@@ -17,6 +17,9 @@ const habbits = [
 	"Riding shared bikes(?)",
 	"and so on...",
 ];
+
+const titleColor = "skyblue";
+const textcase = "capitalize";
 ---
 
 <html lang="zh-cn">
@@ -27,6 +30,18 @@ const habbits = [
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{pageTitle}</title>
+
+		<style define:vars={{ titleColor, textcase }}>
+			h1 {
+				color: var(--titleColor);
+				font-size: 4rem;
+			}
+			.habbit {
+				color: lightcoral;
+				font-weight: bold;
+				text-transform: var(--textcase);
+			}
+		</style>
 	</head>
 
 	<body>
@@ -51,7 +66,7 @@ const habbits = [
 
 		<h3>我的爱好</h3>
 		<ul>
-			{habbits.map((habit) => <li>{habit}</li>)}
+			{habbits.map((habit) => <li class="habbit">{habit}</li>)}
 		</ul>
 	</body>
 </html>

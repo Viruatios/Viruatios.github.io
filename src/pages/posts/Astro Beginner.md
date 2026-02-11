@@ -13,13 +13,15 @@ tags: ["astro", "blogging", "learning in public"]
 
 最初在：2026.02.10
 
-最近在：2026.02.10
+最近在：2026.02.11
 
 ## 我做了什么
 
 正如我在README.md中所说的，我正在尝试制作一个我的个人主页CuLoo's Homepage，Copilot将在最初的构思、框架选择、Astro入门、仓库建立与更新、GitHub Actions自动部署等方面全程参与，之后的编程工作、测试工作等也将尝试使用Copilot进行尽可能流程化的协助。
 
 在之前，我已经完成了一个最小可用版本。在此基础上，我又增添了about页面，又增添了blog页面。现在，我正在编写这篇markdown文本，作为我的第一篇博客文章。
+
+在第二天，在About CuLoo页面用上了Astro开头的JavaScript frontmatter。
 
 ## 我将做什么
 
