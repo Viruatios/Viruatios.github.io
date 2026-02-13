@@ -25,6 +25,8 @@ tags: ["astro", "blogging", "learning in public"]
 
 在第三天，先在About CuLoo页面上试了试定义单页样式，然后用上了通过CSS定义的全局样式。学着重构了HeaderNavigation组件，新增而且调用了Header组件、Footer组件、Social组件等等。
 
+在第四天，学着为HeaderNavigation组件添加了CSS响应式样式。写出了第一段用于交互的JavaScript脚本。
+
 ## 我将做什么
 
 首先，把Astro的入门教程完成。
