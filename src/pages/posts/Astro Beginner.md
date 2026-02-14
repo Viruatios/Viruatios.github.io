@@ -1,4 +1,6 @@
 ---
+layout: ../../layouts/MarkDownPostLayout.astro
+
 title: "My First Blog Post as an Astro Beginner"
 pubDate: 2026-02-10
 description: "This is my first post on my Astro blog."
@@ -8,12 +10,6 @@ image:
   alt: "The Astro logo on a dark background with a pink glow."
 tags: ["astro", "blogging", "learning in public"]
 ---
-
-# 作为Astro初学者的第一篇博客文章
-
-最初在：2026.02.10
-
-最近在：2026.02.12
 
 ## 我做了什么
 
@@ -27,7 +23,7 @@ tags: ["astro", "blogging", "learning in public"]
 
 在第四天，学着为HeaderNavigation组件添加了CSS响应式样式。写出了第一段用于交互的JavaScript脚本。
 
-在第五天，将这段用于交互的脚本独立到了第一个JavaScript文件。学着重构了BaseLayout布局。
+在第五天，将这段用于交互的脚本独立到了第一个JavaScript文件。学着重构了BaseLayout布局，给MarkDown文件也添加了新的布局。
 
 ## 我将做什么
 
