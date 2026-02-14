@@ -27,7 +27,7 @@ tags: ["astro", "blogging", "learning in public"]
 
 在第四天，学着为HeaderNavigation组件添加了CSS响应式样式。写出了第一段用于交互的JavaScript脚本。
 
-在第五天，将这段用于交互的脚本独立到了第一个JavaScript文件。
+在第五天，将这段用于交互的脚本独立到了第一个JavaScript文件。学着重构了BaseLayout布局。
 
 ## 我将做什么
 
