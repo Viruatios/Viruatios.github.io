@@ -1,6 +1,4 @@
 ---
-layout: ../../layouts/MarkDownPostLayout.astro
-
 title: "My First Blog Post as an Astro Beginner"
 pubDate: 2026-02-10
 description: "This is my first post on my Astro blog."
@@ -25,7 +23,7 @@ tags: ["astro", "blogging", "learning in public"]
 
 在第五天，将这段用于交互的脚本独立到了第一个JavaScript文件。学着重构了BaseLayout布局，给MarkDown文件也添加了新的布局。
 
-在第六天，学着使用了Astro的import.meta.glob功能，获取posts目录下的所有md文件，并且在blog页面上动态生成列表。使用TypeScript动态读取所有文章的tags并创建数组，然后创建了一个标签索引页。用上了Astro Islands，编写了一个<span title = "client:load, visible, media, ... 指令告诉 Astro 在页面加载时将其 JavaScript 发送到客户端上并在某些条件下运行，使得组件可交互。这称为被注水的组件。" style="border-bottom:1px dotted; cursor:help;">被注水的组件</span>。仅使用JS和CSS实现了亮暗模式切换。
+在第六天，学着使用了Astro的import.meta.glob功能，获取posts目录下的所有md文件，并且在blog页面上动态生成列表。使用TypeScript动态读取所有文章的tags并创建数组，然后创建了一个标签索引页。用上了Astro Islands，编写了一个<span title = "client:load, visible, media, ... 指令告诉 Astro 在页面加载时将其 JavaScript 发送到客户端上并在某些条件下运行，使得组件可交互。这称为被注水的组件。" style="border-bottom:1px dotted; cursor:help;">被注水的组件</span>。实现了亮暗模式切换。将文章管理从原本的基于文件路由改为了使用内容集合。
 
 到这里，Astro的入门教程就完成了。
 

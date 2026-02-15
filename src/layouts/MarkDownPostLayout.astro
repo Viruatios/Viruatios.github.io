@@ -6,7 +6,7 @@ const { frontmatter } = Astro.props;
 
 <BaseLayout pageTitle={frontmatter.title}>
 	<p>{frontmatter.author}</p>
-	<p>最初在 {frontmatter.pubDate.toString().slice(0, 10)}</p>
+	<p>最初在 {frontmatter.pubDate.toLocaleDateString()}</p>
 
 	<p><em>{frontmatter.description}</em></p>
 
