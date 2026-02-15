@@ -74,3 +74,27 @@ h1{
         display: none;
     }
 }
+
+/*暗色模式*/
+html.dark {
+  background-color: #1F1F1F;
+  color: #fff;
+}
+
+.dark .menu {
+  background-color: #fff;
+  color: #000;
+}
+
+.dark .nav-links a:hover,
+.dark .nav-links a:focus {
+  color: #0d0950;
+}
+
+.dark .nav-links a {
+  color: #fff;
+}
+
+.dark a {
+  color: #ff9776;
+}
