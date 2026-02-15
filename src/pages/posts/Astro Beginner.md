@@ -25,7 +25,7 @@ tags: ["astro", "blogging", "learning in public"]
 
 在第五天，将这段用于交互的脚本独立到了第一个JavaScript文件。学着重构了BaseLayout布局，给MarkDown文件也添加了新的布局。
 
-在第六天，学着使用了Astro的import.meta.glob功能，获取posts目录下的所有md文件，并且在blog页面上动态生成列表。
+在第六天，学着使用了Astro的import.meta.glob功能，获取posts目录下的所有md文件，并且在blog页面上动态生成列表。使用TypeScript动态读取所有文章的tags并创建数组，然后创建了一个标签索引页。
 
 ## 我将做什么
 
