@@ -1,5 +1,10 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import BlogPost from "../components/BlogPost.astro";
+
+const allPosts = Object.values(
+	import.meta.glob("./posts/*.md", { eager: true }),
+);
 
 const pageTitle = "CuLoo's Blogs";
 ---
@@ -8,8 +13,10 @@ const pageTitle = "CuLoo's Blogs";
 	<p>这里会记录一些学习的阶段总结和回顾，也许也会有些随笔。</p>
 
 	<ul>
-		<li>
-			<a href="/posts/Astro Beginner/">作为Astro初学者的第一篇博客文章</a>
-		</li>
+		{
+			allPosts.map((post: any) => (
+				<BlogPost url={post.url} title={post.frontmatter.title} />
+			))
+		}
 	</ul>
 </BaseLayout>
