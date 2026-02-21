@@ -6,7 +6,8 @@ const { platform, username } = Astro.props;
 	platform === "GitHub" && (
 		<a href={`https://github.com/${username}`}>
 			<img
-				src="/GitHub_Invertocat_White.svg"
+				id="github-icon"
+				src="/GitHub_Invertocat_Black.svg"
 				alt="GitHub"
 				width="24"
 				height="24"
@@ -18,7 +19,6 @@ const { platform, username } = Astro.props;
 <style>
 	a {
 		display: inline-block;
-		padding: 0.5rem 0.5rem;
-		background-color: black;
+		padding: 0;
 	}
 </style>

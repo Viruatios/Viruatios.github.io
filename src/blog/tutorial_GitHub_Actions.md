@@ -1,4 +1,13 @@
-# 使用 GitHub Actions 部署 Astro 到 GitHub Pages（详细教程）
+---
+title: "使用 GitHub Actions 部署 Astro 到 GitHub Pages"
+pubDate: 2026-02-10
+description: "配置 GitHub Actions 自动构建并部署 Astro 站点到 GitHub Pages。"
+author: "GitHub Copilot"
+image:
+  url: "/GitHub_Invertocat_Black.svg"
+  alt: "GitHub logo"
+tags: ["GitHub Actions", "Astro", "GitHub Pages", "tutorial"]
+---
 
 本教程适用于：
 
@@ -130,7 +139,7 @@ https://<username>.github.io/my-blog/
 import { defineConfig } from "astro/config";
 
 export default defineConfig({
-  base: "/my-blog/",
+	base: "/my-blog/",
 });
 ```
 
@@ -144,7 +153,7 @@ export default defineConfig({
 
 ```js
 export default defineConfig({
-  outDir: "build",
+	outDir: "build",
 });
 ```
 
