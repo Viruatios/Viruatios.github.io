@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="320" height="320">
+  <defs>
+    <!-- 主体六边形的温暖活力渐变 -->
+    <radialGradient id="hexGrad" cx="35%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#FFF275" />
+      <stop offset="40%" stop-color="#FFB300" />
+      <stop offset="100%" stop-color="#FF7B00" />
+    </radialGradient>
+    
+    <!-- 环绕星轨的神秘紫色渐变 -->
+    <linearGradient id="orbitFrontGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+       <stop offset="0%" stop-color="#A78BFA" />
+       <stop offset="100%" stop-color="#6D28D9" />
+    </linearGradient>
+  </defs>
+
+  <rect width="100%" height="100%" fill="#000"/>
+
+  <!-- ==================== 环绕设计：后半部分星轨 ==================== -->
+  <g transform="rotate(-15 100 100)">
+    <!-- 主轨道 (后) -->
+    <path d="M 10 100 A 90 35 0 0 1 190 100" fill="none" stroke="#A78BFA" stroke-width="6" stroke-linecap="round" opacity="0.35"/>
+    <!-- 辅助虚线轨道 (后) -->
+    <path d="M 25 100 A 75 25 0 0 1 175 100" fill="none" stroke="#A78BFA" stroke-width="2" stroke-dasharray="6 6" stroke-linecap="round" opacity="0.35"/>
+    <!-- 轨道上的小行星 (后) -->
+    <circle cx="177.9" cy="82.5" r="4" fill="#A78BFA" opacity="0.5" />
+  </g>
+
+  <!-- ==================== 吉祥物主体：六边形与面部 ==================== -->
+  <!-- 整体微微倾斜，营造活泼、好奇的动态感 -->
+  <g transform="rotate(6 100 100)">
+
+    <!-- 核心：圆润六边形身体 (通过宽描边圆弧化) -->
+    <polygon points="100,50 143.3,75 143.3,125 100,150 56.7,125 56.7,75" fill="none" stroke="url(#hexGrad)" stroke-width="6" stroke-linejoin="round" />
+
+    <!-- 可爱面部表情组件 -->
+    <g>
+
+      <!-- 害羞腮红 -->
+      <ellipse cx="64" cy="114" rx="10" ry="6" fill="#ffb6c1" />
+      <ellipse cx="136" cy="114" rx="10" ry="6" fill="#ffb6c1" />
+
+      <!-- 灵动的大眼睛 (左) -->
+      <ellipse cx="80" cy="97" rx="8" ry="14" fill="#6e69ff" />
+      
+      <!-- 灵动的大眼睛 (右) -->
+      <ellipse cx="120" cy="97" rx="8" ry="14" fill="#6e69ff" />
+
+      <!-- 开心的笑脸嘴巴 -->
+      <path d="M 93 112 Q 100 116 107 112" fill="none" stroke="#6e69ff" stroke-width="3.5" stroke-linecap="round" />
+    </g>
+  </g>
+
+  <!-- ==================== 环绕设计：前半部分星轨 ==================== -->
+  <g transform="rotate(-15 100 100)">
+    <!-- 主轨道 (前) -->
+    <path d="M 190 100 A 90 35 0 0 1 10 100" fill="none" stroke="url(#orbitFrontGrad)" stroke-width="6" stroke-linecap="round"/>
+    <!-- 辅助虚线轨道 (前) -->
+    <path d="M 175 100 A 75 25 0 0 1 25 100" fill="none" stroke="#8B5CF6" stroke-width="2" stroke-dasharray="6 6" stroke-linecap="round"/>
+    <!-- 轨道上的小行星 (前) -->
+    <circle cx="22" cy="117.5" r="6" fill="#6D28D9" />
+    <circle cx="177.9" cy="117.5" r="3.5" fill="#A78BFA" />
+    <circle cx="100" cy="135" r="2.5" fill="#8B5CF6" />
+  </g>
+
+  <!-- ==================== 背景装饰物：氛围小闪星 ==================== -->
+  <path d="M 160 30 Q 160 35 165 35 Q 160 35 160 40 Q 160 35 155 35 Q 160 35 160 30 Z" fill="#FBBF24" />
+  <path d="M 35 60 Q 35 63 38 63 Q 35 63 35 66 Q 35 63 32 63 Q 35 63 35 60 Z" fill="#FBBF24" />
+  <path d="M 45 150 Q 45 154 49 154 Q 45 154 45 158 Q 45 154 41 154 Q 45 154 45 150 Z" fill="#A78BFA" />
+  <path d="M 165 160 Q 165 163 168 163 Q 165 163 165 166 Q 165 163 162 163 Q 165 163 165 160 Z" fill="#FBBF24" />
+</svg>
