@@ -1,3 +1,6 @@
+<!-- Mascot for CuLoo's Homepage -->
+<!-- Copyright (c) 2026 Viruatios. All rights reserved. -->
+
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="-1.6 -1.6 3.2 3.2" width="320" height="320">
 
 <rect x="-1.6" y="-1.6" width="3.2" height="3.2" fill="#000"/>
@@ -14,8 +17,9 @@
     "
     fill="none"
     stroke="#FFF"
-    stroke-width="0.06"
-  />
+    stroke-width="0.06">
+
+  </polygon>
 
   <!-- 外接圆分段弧（半径=1.4013） -->
   <g fill="none" stroke="#FFF" stroke-width="0.06" stroke-linecap="round">
@@ -31,6 +35,8 @@
     <path d="M -0.3627 -1.3531 A 1.4013 1.4013 0 0 1 0.3627 -1.3531" />
     <!-- 315°~345° -->
     <path d="M 0.9911 -0.9911 A 1.4013 1.4013 0 0 1 1.3531 -0.3627" />
+
+    <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="10s" repeatCount="indefinite"/>
   </g>
 
   <!-- 眼睛 -->
@@ -39,7 +45,7 @@
     <ellipse cx="0.3"  cy="-0.18" rx="0.12" ry="0.28" fill="#ffffff"/>
   </g>
 
-  <!-- 小嘴巴 -->
+  <!-- w小嘴巴（可选项） -->
   <path d="M -0.14 0.08 Q -0.07 0.16 0 0.08 Q 0.07 0.16 0.14 0.08" stroke="#ffffff" stroke-width="0.06" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
 
   <!-- 腮红 -->

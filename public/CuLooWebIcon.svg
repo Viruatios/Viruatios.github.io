@@ -1,4 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="-1.6 -1.6 3.2 3.2" width="32" height="32">
+<!-- Simplified version of the CuLooIcon. -->
+<!-- Copyright (c) 2026 Viruatios. All rights reserved. -->
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-1.6 -1.6 3.2 3.2" width="160" height="160">
 
 <rect x="-1.6" y="-1.6" width="3.2" height="3.2" fill="#000" rx="0.6" ry="0.6"/>
 
@@ -14,11 +17,11 @@
     "
     fill="none"
     stroke="#FFF"
-    stroke-width="0.1"
+    stroke-width="0.2"
   />
 
   <!-- 外接圆分段弧（半径=1.4013） -->
-  <g fill="none" stroke="#FFF" stroke-width="0.1" stroke-linecap="round">
+  <g fill="none" stroke="#FFF" stroke-width="0.2" stroke-linecap="round">
     <!-- 15°~45° -->
     <path d="M 1.3531 0.3627 A 1.4013 1.4013 0 0 1 0.9911 0.9911" />
     <!-- 75°~105° -->
@@ -35,16 +38,13 @@
 
   <!-- 眼睛 -->
   <g>
-    <ellipse cx="-0.3" cy="-0.12" rx="0.16" ry="0.36" fill="#ffffff"/>
-    <ellipse cx="0.3"  cy="-0.12" rx="0.16" ry="0.36" fill="#ffffff"/>
+    <ellipse cx="-0.3" cy="-0.12" rx="0.16" ry="0.30" fill="#ffffff"/>
+    <ellipse cx="0.3"  cy="-0.12" rx="0.16" ry="0.30" fill="#ffffff"/>
   </g>
 
-  <!-- 小嘴巴 
-  <path d="M -0.14 0.08 Q -0.07 0.16 0 0.08 Q 0.07 0.16 0.14 0.08" stroke="#ffffff" stroke-width="0.1" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-  -->
-
-  <!-- 腮红 -->
-  <ellipse cx="-0.8" cy="0.27" rx="0.21" ry="0.12" fill="#ffb6c1"/>
-  <ellipse cx="0.8"  cy="0.27" rx="0.21" ry="0.12" fill="#ffb6c1"/>
+  <!-- 腮红（可选项） 
+  <ellipse cx="-0.8" cy="0.3" rx="0.36" ry="0.2" fill="#ffb6c1"/>
+  <ellipse cx="0.8"  cy="0.3" rx="0.36" ry="0.2" fill="#ffb6c1"/>
+-->
 
 </svg>
