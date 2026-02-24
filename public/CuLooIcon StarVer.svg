@@ -28,7 +28,7 @@
   </g>
 
   <!-- 吉祥物主体：六边形与面部 -->
-  <!-- 整体微微倾斜，动态感 -->
+  <!-- 整体微微倾斜，看起来像歪头 -->
   <g transform="rotate(6 100 100)">
 
     <!-- 六边形身体 -->
@@ -66,7 +66,7 @@
 
   <!-- 疑惑标记 -->
   <g transform="rotate(-15 100 100)">
-    <text x="86" y="32" fill="#0099ff" font-size="36" font-weight="700" text-anchor="middle" dominant-baseline="middle">?</text>
+    <text x="86" y="32" fill="#00cfff" font-size="36" font-weight="700" text-anchor="middle" dominant-baseline="middle">?</text>
   </g>
 
   <!-- 背景装饰物：氛围小闪星 -->

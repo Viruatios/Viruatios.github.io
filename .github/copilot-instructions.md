@@ -32,3 +32,7 @@
 
 - React integration enabled in [astro.config.mjs](astro.config.mjs) via `@astrojs/react`.
 - Static assets are served from [public/](public/); example icon usage in [src/components/Social.astro](src/components/Social.astro).
+
+## Communication rules
+
+- When the user asks for an explanation, assume they are new to the topic by default. If technical terms are used, add brief plain-language explanations for those terms.

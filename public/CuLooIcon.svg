@@ -17,12 +17,12 @@
     "
     fill="none"
     stroke="#FFF"
-    stroke-width="0.06">
+    stroke-width="0.1">
 
   </polygon>
 
   <!-- 外接圆分段弧（半径=1.4013） -->
-  <g fill="none" stroke="#FFF" stroke-width="0.06" stroke-linecap="round">
+  <g fill="none" stroke="#FFF" stroke-width="0.1" stroke-linecap="round">
     <!-- 15°~45° -->
     <path d="M 1.3531 0.3627 A 1.4013 1.4013 0 0 1 0.9911 0.9911" />
     <!-- 75°~105° -->

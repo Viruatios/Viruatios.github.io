@@ -5,23 +5,13 @@ import ThemeIcon from "./ThemeIcon.astro";
 ---
 
 <header>
-	<nav>
-		<div>
-			<Menu />
-			<ThemeIcon />
-		</div>
-
+	<nav class="site-nav">
+		<Menu />
 		<Navigation />
+		<ThemeIcon />
 	</nav>
 
 	<script>
 		import "../scripts/menu.js";
 	</script>
 </header>
-
-<style>
-	div {
-		display: flex;
-		justify-content: space-between;
-	}
-</style>

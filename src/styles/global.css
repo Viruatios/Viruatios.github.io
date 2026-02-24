@@ -21,6 +21,13 @@ h1 {
 }
 
 /*导航区*/
+.site-nav {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.5rem;
+}
+
 .menu {
 	background-color: #0d0950;
 	border: none;
@@ -28,12 +35,19 @@ h1 {
 	font-size: 1.2rem;
 	font-weight: bold;
 	padding: 5px 10px;
+	order: 1; /*在flex布局中，order属性定义了元素的排列顺序，数值越小越靠前。默认值为0。 */
+}
+
+.site-nav #themeToggle {
+	order: 2;
+	margin-left: auto; /*在flex布局中，margin-left: auto;会将元素推到容器的最右边。 */
 }
 
 .nav-links {
 	width: 100%;
-	display: none;
+	display: none; /*默认隐藏*/
 	margin: 0;
+	order: 3;
 }
 
 .nav-links a {
@@ -57,8 +71,13 @@ h1 {
 }
 
 @media screen and (min-width: 636px) {
+	.site-nav {
+		flex-wrap: nowrap; /*强制不换行*/
+	}
+
 	.nav-links {
-		margin-left: 5em;
+		order: 2;
+		margin: 0 auto 0 2rem;
 		display: block;
 		position: static;
 		width: auto;
@@ -72,6 +91,11 @@ h1 {
 
 	.menu {
 		display: none;
+	}
+
+	.site-nav #themeToggle {
+		order: 3;
+		margin-left: 0;
 	}
 }
 
@@ -103,4 +127,25 @@ html.dark {
 
 .dark a {
 	color: #ff9776;
+}
+
+/*全局主题切换过渡*/
+::view-transition-old(root),
+::view-transition-new(root) {
+	animation: none;
+	mix-blend-mode: normal;
+}
+
+::view-transition-new(root) {
+	clip-path: circle(0 at var(--theme-click-x, 50vw) var(--theme-click-y, 50vh));
+	animation: theme-reveal 250ms ease-out forwards;
+}
+
+@keyframes theme-reveal {
+	to {
+		clip-path: circle(
+			var(--theme-end-radius, 150vmax) at var(--theme-click-x, 50vw)
+				var(--theme-click-y, 50vh)
+		);
+	}
 }
