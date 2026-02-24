@@ -1,0 +1,36 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const pageTitle = "404 Not Found";
+---
+
+<BaseLayout pageTitle={pageTitle}>
+	<main class="not-found">
+		<img
+			src="/CuLooIcon%20StarVer.svg"
+			alt="CuLoo 404 mascot"
+			class="not-found-icon"
+		/>
+	</main>
+</BaseLayout>
+
+<style is:global>
+	h1 {
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+	}
+
+	.not-found {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+	}
+
+	.not-found-icon {
+		width: min(280px, 70vw);
+		height: auto;
+	}
+</style>
