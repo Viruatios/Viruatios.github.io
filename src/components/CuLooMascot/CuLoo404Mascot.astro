@@ -26,155 +26,186 @@
 		</linearGradient>
 	</defs>
 
-	<!-- 环绕设计：后半部分星轨 -->
-	<g transform="rotate(-15 100 100)">
-		<!-- 主轨道 (后) -->
-		<path
-			d="M 10 100 A 90 35 0 0 1 190 100"
-			fill="none"
-			stroke="#A78BFA"
-			stroke-width="6"
-			stroke-linecap="round"
-			opacity="0.35"></path>
-		<!-- 辅助虚线轨道 (后) -->
-		<path
-			d="M 25 100 A 75 25 0 0 1 175 100"
-			fill="none"
-			stroke="#A78BFA"
-			stroke-width="2"
-			stroke-dasharray="6 6"
-			stroke-linecap="round"
-			opacity="0.35"></path>
-		<!-- 轨道上的小行星 (后) -->
-		<circle cx="177.9" cy="82.5" r="4" fill="#A78BFA" opacity="0.5"></circle>
-	</g>
-
-	<!-- 吉祥物主体：六边形与面部 -->
-	<!-- 整体微微倾斜，看起来像歪头 -->
-	<g transform="rotate(6 100 100)">
-		<g class="shake-layer">
-			<!-- 六边形身体 -->
-			<polygon
-				points="100,50 143.3,75 143.3,125 100,150 56.7,125 56.7,75"
+	<g class="mascot-scene">
+		<!-- 环绕设计：后半部分星轨 -->
+		<g transform="rotate(-15 100 100)">
+			<!-- 主轨道 (后) -->
+			<path
+				d="M 10 100 A 90 35 0 0 1 190 100"
 				fill="none"
-				stroke="url(#hexGrad)"
+				stroke="#A78BFA"
 				stroke-width="6"
-				stroke-linejoin="round"></polygon>
+				stroke-linecap="round"
+				opacity="0.35"></path>
+			<!-- 辅助虚线轨道 (后) -->
+			<path
+				d="M 25 100 A 75 25 0 0 1 175 100"
+				fill="none"
+				stroke="#A78BFA"
+				stroke-width="2"
+				stroke-dasharray="6 6"
+				stroke-linecap="round"
+				opacity="0.35"></path>
+			<!-- 轨道上的小行星 (后) -->
+			<circle cx="177.9" cy="82.5" r="4" fill="#A78BFA" opacity="0.5"></circle>
+		</g>
 
-			<!-- 腮红 -->
-			<ellipse cx="64" cy="114" rx="10" ry="6" fill="#ffb6c1"></ellipse>
-			<ellipse cx="136" cy="114" rx="10" ry="6" fill="#ffb6c1"></ellipse>
-
-			<!-- 面部表情组件 -->
-			<g>
-				<!-- 眼睛 (豆豆眼) -->
-				<ellipse
-					class="eye-normal left"
-					cx="80"
-					cy="97"
-					rx="8"
-					ry="14"
-					fill="#6e69ff"></ellipse>
-				<ellipse
-					class="eye-normal right"
-					cx="120"
-					cy="97"
-					rx="8"
-					ry="14"
-					fill="#6e69ff"></ellipse>
-
-				<!-- 眼睛 (><) -->
-				<g
-					class="eye-cross left"
+		<!-- 吉祥物主体：六边形与面部 -->
+		<!-- 整体微微倾斜，看起来像歪头 -->
+		<g transform="rotate(6 100 100)">
+			<g class="shake-layer">
+				<!-- 六边形身体 -->
+				<polygon
+					points="100,50 143.3,75 143.3,125 100,150 56.7,125 56.7,75"
 					fill="none"
-					stroke="#6e69ff"
-					stroke-width="4"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-				>
-					<path d="M 74 90 L 86 97 L 74 104"></path>
+					stroke="url(#hexGrad)"
+					stroke-width="6"
+					stroke-linejoin="round"></polygon>
+
+				<!-- 腮红 -->
+				<ellipse cx="64" cy="114" rx="10" ry="6" fill="#ffb6c1"></ellipse>
+				<ellipse cx="136" cy="114" rx="10" ry="6" fill="#ffb6c1"></ellipse>
+
+				<!-- 面部表情组件 -->
+				<g>
+					<!-- 眼睛 (豆豆眼) -->
+					<ellipse
+						class="eye-normal left"
+						cx="80"
+						cy="97"
+						rx="8"
+						ry="14"
+						fill="#6e69ff"></ellipse>
+					<ellipse
+						class="eye-normal right"
+						cx="120"
+						cy="97"
+						rx="8"
+						ry="14"
+						fill="#6e69ff"></ellipse>
+
+					<!-- 眼睛 (><) -->
+					<g
+						class="eye-cross left"
+						fill="none"
+						stroke="#6e69ff"
+						stroke-width="6"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					>
+						<path d="M 74 90 L 86 97 L 74 104"></path>
+					</g>
+					<g
+						class="eye-cross right"
+						fill="none"
+						stroke="#6e69ff"
+						stroke-width="6"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					>
+						<path d="M 126 90 L 114 97 L 126 104"></path>
+					</g>
+
+					<!-- 嘴巴 -->
+					<path
+						d="M 93 112 Q 100 108 107 112"
+						fill="none"
+						stroke="#6e69ff"
+						stroke-width="3.5"
+						stroke-linecap="round"></path>
 				</g>
-				<g
-					class="eye-cross right"
-					fill="none"
-					stroke="#6e69ff"
-					stroke-width="4"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-				>
-					<path d="M 126 90 L 114 97 L 126 104"></path>
-				</g>
-
-				<!-- 嘴巴 -->
-				<path
-					d="M 93 112 Q 100 108 107 112"
-					fill="none"
-					stroke="#6e69ff"
-					stroke-width="3.5"
-					stroke-linecap="round"></path>
 			</g>
 		</g>
-	</g>
 
-	<!-- 环绕设计：前半部分星轨 -->
-	<g transform="rotate(-15 100 100)">
-		<!-- 主轨道 (前) -->
+		<!-- 环绕设计：前半部分星轨 -->
+		<g transform="rotate(-15 100 100)">
+			<!-- 主轨道 (前) -->
+			<path
+				d="M 190 100 A 90 35 0 0 1 10 100"
+				fill="none"
+				stroke="url(#orbitFrontGrad)"
+				stroke-width="6"
+				stroke-linecap="round"></path>
+			<!-- 辅助虚线轨道 (前) -->
+			<path
+				d="M 175 100 A 75 25 0 0 1 25 100"
+				fill="none"
+				stroke="#8B5CF6"
+				stroke-width="2"
+				stroke-dasharray="6 6"
+				stroke-linecap="round"></path>
+			<!-- 轨道上的小行星 (前) -->
+			<circle cx="22" cy="117.5" r="6" fill="#6D28D9"></circle>
+			<circle cx="177.9" cy="117.5" r="3.5" fill="#A78BFA"></circle>
+			<circle cx="100" cy="135" r="2.5" fill="#8B5CF6"></circle>
+		</g>
+
+		<!-- 疑惑标记 -->
+		<g transform="rotate(-15 100 100)">
+			<text
+				x="86"
+				y="32"
+				fill="#00cfff"
+				font-size="36"
+				font-weight="700"
+				text-anchor="middle"
+				dominant-baseline="middle">?</text
+			>
+			<text
+				class="question-exclamation"
+				x="104"
+				y="32"
+				fill="#00cfff"
+				font-size="36"
+				font-weight="700"
+				text-anchor="middle"
+				dominant-baseline="middle">!</text
+			>
+		</g>
+
+		<!-- 背景装饰物：氛围小闪星 -->
 		<path
-			d="M 190 100 A 90 35 0 0 1 10 100"
-			fill="none"
-			stroke="url(#orbitFrontGrad)"
-			stroke-width="6"
-			stroke-linecap="round"></path>
-		<!-- 辅助虚线轨道 (前) -->
+			d="M 160 30 Q 160 35 165 35 Q 160 35 160 40 Q 160 35 155 35 Q 160 35 160 30 Z"
+			fill="#FBBF24"></path>
 		<path
-			d="M 175 100 A 75 25 0 0 1 25 100"
-			fill="none"
-			stroke="#8B5CF6"
-			stroke-width="2"
-			stroke-dasharray="6 6"
-			stroke-linecap="round"></path>
-		<!-- 轨道上的小行星 (前) -->
-		<circle cx="22" cy="117.5" r="6" fill="#6D28D9"></circle>
-		<circle cx="177.9" cy="117.5" r="3.5" fill="#A78BFA"></circle>
-		<circle cx="100" cy="135" r="2.5" fill="#8B5CF6"></circle>
+			d="M 35 60 Q 35 63 38 63 Q 35 63 35 66 Q 35 63 32 63 Q 35 63 35 60 Z"
+			fill="#FBBF24"></path>
+		<path
+			d="M 45 150 Q 45 154 49 154 Q 45 154 45 158 Q 45 154 41 154 Q 45 154 45 150 Z"
+			fill="#FBBF24"></path>
+		<path
+			d="M 165 160 Q 165 163 168 163 Q 165 163 165 166 Q 165 163 162 163 Q 165 163 165 160 Z"
+			fill="#FBBF24"></path>
 	</g>
 
-	<!-- 疑惑标记 -->
-	<g transform="rotate(-15 100 100)">
-		<text
-			x="86"
-			y="32"
-			fill="#00cfff"
-			font-size="36"
-			font-weight="700"
-			text-anchor="middle"
-			dominant-baseline="middle">?</text
-		>
-		<text
-			class="question-exclamation"
-			x="104"
-			y="32"
-			fill="#00cfff"
-			font-size="36"
-			font-weight="700"
-			text-anchor="middle"
-			dominant-baseline="middle">!</text
-		>
-	</g>
+	<!-- 生气：三连击后绘制并短暂停留 -->
+	<g
+		class="anger-symbol"
+		fill="none"
+		stroke="#ef4444"
+		stroke-linecap="round"
+		stroke-linejoin="round"
+	>
+		<!-- 愤怒的脸部表情 -->
+		<g stroke-width="6">
+			<!-- 左眼 \ -->
+			<path d="M 65 78 L 85 83"></path>
+			<!-- 右眼 / -->
+			<path d="M 135 78 L 115 83"></path>
+			<!-- 嘴巴 ⁔ -->
+			<path d="M 90 105 Q 100 100 108 103"></path>
+			<!-- 嘴角细节 ( -->
+			<path d="M 112 98 Q 108 103 112 110"></path>
+		</g>
 
-	<!-- 背景装饰物：氛围小闪星 -->
-	<path
-		d="M 160 30 Q 160 35 165 35 Q 160 35 160 40 Q 160 35 155 35 Q 160 35 160 30 Z"
-		fill="#FBBF24"></path>
-	<path
-		d="M 35 60 Q 35 63 38 63 Q 35 63 35 66 Q 35 63 32 63 Q 35 63 35 60 Z"
-		fill="#FBBF24"></path>
-	<path
-		d="M 45 150 Q 45 154 49 154 Q 45 154 45 158 Q 45 154 41 154 Q 45 154 45 150 Z"
-		fill="#FBBF24"></path>
-	<path
-		d="M 165 160 Q 165 163 168 163 Q 165 163 165 166 Q 165 163 162 163 Q 165 163 165 160 Z"
-		fill="#FBBF24"></path>
+		<!-- 右上角青筋图标 💢 -->
+		<g stroke-width="4" transform="rotate(21,155,45)">
+			<path d="M 147 33 Q 155 42 163 33"></path>
+			<path d="M 167 37 Q 158 45 167 53"></path>
+			<path d="M 163 57 Q 155 48 147 57"></path>
+			<path d="M 143 53 Q 152 45 143 37"></path>
+		</g>
+	</g>
 </svg>
 
 <script>
@@ -185,13 +216,30 @@
 	);
 
 	mascots.forEach((mascot) => {
-		const normalEyes = mascot.querySelectorAll(".eye-normal");
-		const crossEyes = mascot.querySelectorAll(".eye-cross");
-		const exclamation = mascot.querySelector(".question-exclamation");
+		const normalEyes =
+			mascot.querySelectorAll<SVGEllipseElement>(".eye-normal");
+		const crossEyes = mascot.querySelectorAll<SVGGElement>(".eye-cross");
+		const exclamation = mascot.querySelector<SVGTextElement>(
+			".question-exclamation",
+		);
 		const shakeLayer = mascot.querySelector<SVGGElement>(".shake-layer");
+		const mascotScene = mascot.querySelector<SVGGElement>(".mascot-scene");
+		const angerSymbol = mascot.querySelector<SVGGElement>(".anger-symbol");
+		const angerPaths =
+			mascot.querySelectorAll<SVGPathElement>(".anger-symbol path");
 
-		if (normalEyes.length && crossEyes.length && exclamation && shakeLayer) {
+		if (
+			normalEyes.length &&
+			crossEyes.length &&
+			exclamation &&
+			shakeLayer &&
+			mascotScene &&
+			angerSymbol &&
+			angerPaths.length
+		) {
 			mascot.style.cursor = "pointer";
+			let clickCount = 0;
+			let isRageAnimating = false;
 
 			gsap.set(crossEyes, {
 				opacity: 0,
@@ -204,8 +252,30 @@
 				y: 10,
 			});
 
+			gsap.set(mascotScene, {
+				transformOrigin: "center center",
+				scale: 1,
+				opacity: 1,
+			});
+
+			gsap.set(angerSymbol, {
+				opacity: 0,
+				scale: 1,
+				transformOrigin: "center center",
+			});
+
+			// 初始化愤怒图标的路径
+			angerPaths.forEach((path) => {
+				// 通过设置 strokeDasharray 和 strokeDashoffset 来隐藏路径，并在动画中逐渐显示
+				const pathLength = path.getTotalLength();
+				gsap.set(path, {
+					strokeDasharray: pathLength,
+					strokeDashoffset: pathLength,
+				});
+			});
+
 			// 用 Z-X-Z 分解定义轴线角度，避免 SVG 环境下 rotate3d(x,y,0,angle) 的轴解释偏差。
-			// 使用精确的数学填值代入，避免手算带来的误差影响，同时使得后续修改更方便
+			// 使用变量值代入式子计算，避免手算带来的误差影响，同时使得后续修改更方便
 			const center = { x: 100, y: 100 };
 			const baseTiltDeg = 6;
 			const axisPointA = { x: 100, y: 50 };
@@ -305,7 +375,79 @@
 				)
 				.set(shakeLayer, { clearProps: "transform" }, baseDuration);
 
+			// 定义生气动画时间轴，初始状态为暂停。触发条件是连续点击达到 4 次，动画结束后重置状态允许再次触发。
+			const rageTl = gsap.timeline({
+				paused: true,
+				onStart: () => {
+					isRageAnimating = true;
+					mascot.style.pointerEvents = "none";
+				},
+				onComplete: () => {
+					isRageAnimating = false;
+					mascot.style.pointerEvents = "auto";
+					clickCount = 0;
+				},
+			});
+
+			rageTl
+				.to(mascotScene, {
+					scale: 0,
+					opacity: 0,
+					duration: 0.2,
+					ease: "power4.in",
+				})
+				.set(angerSymbol, { opacity: 1, scale: 1 })
+				.to(
+					angerPaths,
+					{
+						strokeDashoffset: 0,
+						duration: 0.5,
+						ease: "power2.out",
+						stagger: 0,
+					},
+					"<",
+				)
+				.to({}, { duration: 3 })
+				.to(angerSymbol, {
+					opacity: 0,
+					duration: 0.2,
+					ease: "power2.in",
+				})
+				.add(() => {
+					angerPaths.forEach((path) => {
+						const pathLength = path.getTotalLength();
+						gsap.set(path, {
+							strokeDasharray: pathLength,
+							strokeDashoffset: pathLength,
+						});
+					});
+				})
+				.set(angerSymbol, { scale: 0.6 })
+				.to(
+					mascotScene,
+					{
+						scale: 1,
+						opacity: 1,
+						duration: 0.28,
+						ease: "power2.out",
+					},
+					"<",
+				);
+
 			mascot.addEventListener("click", () => {
+				// 如果正在播放生气动画，则点击不触发任何反应，直到动画结束后才重置状态允许再次触发
+				if (isRageAnimating) {
+					return;
+				}
+
+				clickCount += 1;
+
+				// 连续点击达到 4 次时触发生气动画，并在动画结束后重置点击计数
+				if (clickCount === 4) {
+					rageTl.restart();
+					return;
+				}
+
 				tl.restart();
 			});
 		}

@@ -6,7 +6,15 @@ author: "Viruatios"
 image:
   url: "/CuLooIcon StarVer.svg"
   alt: CuLoo404Mascot
-tags: ["JavaScript", "Web Development", "Animation", "GSAP", "tutorial"]
+tags:
+  [
+    "JavaScript",
+    "Web Development",
+    "Animation",
+    "GSAP",
+    "tutorial",
+    "Personal Journey",
+  ]
 ---
 
 在CuLoo's Homepage的开发中，当 CSS 动画或原生 Web Animations API 无法满足我的需求时，我选择求助于进阶的方案——**GSAP (GreenSock Animation Platform)**。
@@ -195,9 +203,73 @@ tween.kill();
 
 如果你在同一个元素上多次创建动画，也可以考虑使用 `gsap.context()` 管理作用域并统一 `revert()`。
 
-## 结语
+---
 
-建议这样学习 GSAP：
+## 五、Personal Journey：CuLoo404Mascot 是怎么做出来的
+
+CuLoo404Mascot 复盘。
+
+### 1. 制作过程回顾
+
+我把这个动画拆成了 4 步：
+
+1. 先画静态 SVG 结构：六边形主体、眼睛、嘴巴、问号感叹号、前后轨道。
+2. 再拆动画层级：把“身体轮廓”与“面部表情”分组，避免互相干扰。
+3. 用 GSAP timeline 编排表情变化：正常眼切换到 `> <` 眼，再切回。
+4. 用代理对象 + `Math.sin()` 驱动 3D 摇摆：保证左右摆动是连续且无停顿的。
+
+这样拆分的好处是：每一步都能单独调试，出了问题也容易定位。
+
+### 2. 设计
+
+- **视觉分层设计**：轨道分前景和后景，主体在中间，形成空间关系。
+- **角色状态设计**：平静眼神和惊讶眼神切换，强调 404Mascot 的“疑惑感”。
+- **运动节奏设计**：摇摆是主动作，眼神/感叹号是辅助动作，时间上重叠但优先级不同。
+- **交互触发设计**：点击后重播，避免页面一直自动晃动影响阅读。
+
+这一个迷你动效系统不是“一个补间”，而是“多个补间的协同表演”。
+
+### 3. 最需要注意的细节
+
+1. **SVG 3D 旋转的投影问题**：如果只写 `rotateX()`，浏览器会出现“看起来总往一侧转”的表现。加入 `perspective(...)` 的视角后，正负角度的体积变化才更容易区分。
+2. **避免多段 `to()` 的接缝停顿**：把角度变化交给 `Math.sin()` 连续计算，通常比“0 -> 正角 -> 0 -> 负角 -> 0”的硬切更顺滑。
+3. **时间参数统一管理**：像 `shakeMaxAngle`、`shakeDuration`、`changeDuration` 这类值要集中定义，后续微调才不会牵一发动全身。
+4. **避免重复绑定事件**：如果组件会重复挂载，记得在销毁时清理监听与动画实例。
+5. **主次动作分离**：摇摆是主动作，眼神和标点是点缀动作。不要让所有元素同时做大幅变化，否则会造成视觉噪声。
+6. **尽可能依赖GSAP**：原生的CSS动画会因为浏览器等各种原因出现不稳定的表现，GSAP的补间引擎能帮助实现平滑过渡，减少意外。
+
+### 4. 一段核心思路伪代码
+
+```javascript
+const state = { progress: 0, angle: 0 };
+
+// 主时间轴：统一编排角色动作
+const tl = gsap.timeline({ paused: true });
+
+// 连续摇摆：用 progress 驱动正弦角度
+tl.to(
+	state,
+	{
+		progress: 1,
+		duration: shakeDuration * 4,
+		ease: "none",
+		onUpdate: () => {
+			state.angle = Math.sin(state.progress * Math.PI * 2) * shakeMaxAngle;
+			updateTransform(state.angle);
+		},
+	},
+	0,
+);
+
+// 表情变化：与摇摆并行插入
+tl.to(normalEyes, { opacity: 0, duration: 0.2 }, 0).to(
+	crossEyes,
+	{ opacity: 1, duration: 0.2 },
+	0,
+);
+```
+
+## 六、结语
 
 1. 先熟练 `to/from/fromTo/set`，理解补间。
 2. 再用 `timeline` 组织多段动画节奏。
