@@ -64,55 +64,55 @@
 			<!-- 腮红 -->
 			<ellipse cx="64" cy="114" rx="10" ry="6" fill="#ffb6c1"></ellipse>
 			<ellipse cx="136" cy="114" rx="10" ry="6" fill="#ffb6c1"></ellipse>
-		</g>
 
-		<!-- 面部表情组件 -->
-		<g>
-			<!-- 眼睛 (豆豆眼) -->
-			<ellipse
-				class="eye-normal left"
-				cx="80"
-				cy="97"
-				rx="8"
-				ry="14"
-				fill="#6e69ff"></ellipse>
-			<ellipse
-				class="eye-normal right"
-				cx="120"
-				cy="97"
-				rx="8"
-				ry="14"
-				fill="#6e69ff"></ellipse>
+			<!-- 面部表情组件 -->
+			<g>
+				<!-- 眼睛 (豆豆眼) -->
+				<ellipse
+					class="eye-normal left"
+					cx="80"
+					cy="97"
+					rx="8"
+					ry="14"
+					fill="#6e69ff"></ellipse>
+				<ellipse
+					class="eye-normal right"
+					cx="120"
+					cy="97"
+					rx="8"
+					ry="14"
+					fill="#6e69ff"></ellipse>
 
-			<!-- 眼睛 (><) -->
-			<g
-				class="eye-cross left"
-				fill="none"
-				stroke="#6e69ff"
-				stroke-width="4"
-				stroke-linecap="round"
-				stroke-linejoin="round"
-			>
-				<path d="M 74 90 L 86 97 L 74 104"></path>
+				<!-- 眼睛 (><) -->
+				<g
+					class="eye-cross left"
+					fill="none"
+					stroke="#6e69ff"
+					stroke-width="4"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				>
+					<path d="M 74 90 L 86 97 L 74 104"></path>
+				</g>
+				<g
+					class="eye-cross right"
+					fill="none"
+					stroke="#6e69ff"
+					stroke-width="4"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				>
+					<path d="M 126 90 L 114 97 L 126 104"></path>
+				</g>
+
+				<!-- 嘴巴 -->
+				<path
+					d="M 93 112 Q 100 108 107 112"
+					fill="none"
+					stroke="#6e69ff"
+					stroke-width="3.5"
+					stroke-linecap="round"></path>
 			</g>
-			<g
-				class="eye-cross right"
-				fill="none"
-				stroke="#6e69ff"
-				stroke-width="4"
-				stroke-linecap="round"
-				stroke-linejoin="round"
-			>
-				<path d="M 126 90 L 114 97 L 126 104"></path>
-			</g>
-
-			<!-- 嘴巴 -->
-			<path
-				d="M 93 112 Q 100 108 107 112"
-				fill="none"
-				stroke="#6e69ff"
-				stroke-width="3.5"
-				stroke-linecap="round"></path>
 		</g>
 	</g>
 
@@ -180,15 +180,19 @@
 <script>
 	import gsap from "gsap";
 
-	const mascots = document.querySelectorAll("[data-culoo-404-mascot]");
+	const mascots = document.querySelectorAll<SVGSVGElement>(
+		"[data-culoo-404-mascot]",
+	);
 
 	mascots.forEach((mascot) => {
 		const normalEyes = mascot.querySelectorAll(".eye-normal");
 		const crossEyes = mascot.querySelectorAll(".eye-cross");
 		const exclamation = mascot.querySelector(".question-exclamation");
-		const shakeLayer = mascot.querySelector(".shake-layer");
+		const shakeLayer = mascot.querySelector<SVGGElement>(".shake-layer");
 
 		if (normalEyes.length && crossEyes.length && exclamation && shakeLayer) {
+			mascot.style.cursor = "pointer";
+
 			gsap.set(crossEyes, {
 				opacity: 0,
 				scale: 0.75,
@@ -233,6 +237,7 @@
 
 			const tl = gsap.timeline({
 				defaults: { ease: "power2.inOut" },
+				paused: true,
 			});
 
 			// 定义状态对象，将旋转动画分为明确的两个部分以解决只会一侧旋转的bug
@@ -243,9 +248,9 @@
 			};
 
 			// 将旋转角度的绝对值、持续时间等都提取为统一管理的变量
-			const baseDuration = 4; // 整体动画总时长
+			const baseDuration = 3.2; // 整体动画总时长
 			const shakeMaxAngle = 20; // 旋转角度绝对值
-			const shakeDuration = 0.5; // 单次旋转持续时间（1/4个周期）
+			const shakeDuration = 0.4; // 单次旋转持续时间（1/4个周期）
 			const changeDuration = 0.2; // 眼神和叹号的变化持续时间
 
 			// 将向两侧旋转的动作组合为一个独立的、可重复的时间轴
@@ -299,6 +304,10 @@
 					baseDuration - changeDuration,
 				)
 				.set(shakeLayer, { clearProps: "transform" }, baseDuration);
+
+			mascot.addEventListener("click", () => {
+				tl.restart();
+			});
 		}
 	});
 </script>
