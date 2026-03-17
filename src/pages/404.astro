@@ -1,16 +1,13 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import CuLoo404Mascot from "../components/CuLooMascot/CuLoo404Mascot.astro";
 
 const pageTitle = "404 Not Found";
 ---
 
 <BaseLayout pageTitle={pageTitle}>
 	<main class="not-found">
-		<img
-			src="/CuLooIcon%20StarVer.svg"
-			alt="CuLoo 404 mascot"
-			class="not-found-icon"
-		/>
+		<CuLoo404Mascot class="not-found-icon" title="CuLoo 404 mascot" />
 	</main>
 </BaseLayout>
 

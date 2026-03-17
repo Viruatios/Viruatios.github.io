@@ -1,0 +1,304 @@
+---
+
+---
+
+<!-- Star version of the CuLooIcon, used in 404 Not Found, GSAP animated --><!-- Copyright (c) 2026 Viruatios. All rights reserved. -->
+<svg
+	class="culoo-404-mascot"
+	data-culoo-404-mascot
+	xmlns="http://www.w3.org/2000/svg"
+	viewBox="0 0 200 200"
+	width="320"
+	height="320"
+>
+	<defs>
+		<!-- 主体六边形渐变 -->
+		<radialGradient id="hexGrad" cx="35%" cy="30%" r="75%">
+			<stop offset="0%" stop-color="#00ffff"></stop>
+			<stop offset="40%" stop-color="#00cfff"></stop>
+			<stop offset="100%" stop-color="#0417ff"></stop>
+		</radialGradient>
+
+		<!-- 环绕星轨渐变 -->
+		<linearGradient id="orbitFrontGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+			<stop offset="0%" stop-color="#A78BFA"></stop>
+			<stop offset="100%" stop-color="#6D28D9"></stop>
+		</linearGradient>
+	</defs>
+
+	<!-- 环绕设计：后半部分星轨 -->
+	<g transform="rotate(-15 100 100)">
+		<!-- 主轨道 (后) -->
+		<path
+			d="M 10 100 A 90 35 0 0 1 190 100"
+			fill="none"
+			stroke="#A78BFA"
+			stroke-width="6"
+			stroke-linecap="round"
+			opacity="0.35"></path>
+		<!-- 辅助虚线轨道 (后) -->
+		<path
+			d="M 25 100 A 75 25 0 0 1 175 100"
+			fill="none"
+			stroke="#A78BFA"
+			stroke-width="2"
+			stroke-dasharray="6 6"
+			stroke-linecap="round"
+			opacity="0.35"></path>
+		<!-- 轨道上的小行星 (后) -->
+		<circle cx="177.9" cy="82.5" r="4" fill="#A78BFA" opacity="0.5"></circle>
+	</g>
+
+	<!-- 吉祥物主体：六边形与面部 -->
+	<!-- 整体微微倾斜，看起来像歪头 -->
+	<g transform="rotate(6 100 100)">
+		<g class="shake-layer">
+			<!-- 六边形身体 -->
+			<polygon
+				points="100,50 143.3,75 143.3,125 100,150 56.7,125 56.7,75"
+				fill="none"
+				stroke="url(#hexGrad)"
+				stroke-width="6"
+				stroke-linejoin="round"></polygon>
+
+			<!-- 腮红 -->
+			<ellipse cx="64" cy="114" rx="10" ry="6" fill="#ffb6c1"></ellipse>
+			<ellipse cx="136" cy="114" rx="10" ry="6" fill="#ffb6c1"></ellipse>
+		</g>
+
+		<!-- 面部表情组件 -->
+		<g>
+			<!-- 眼睛 (豆豆眼) -->
+			<ellipse
+				class="eye-normal left"
+				cx="80"
+				cy="97"
+				rx="8"
+				ry="14"
+				fill="#6e69ff"></ellipse>
+			<ellipse
+				class="eye-normal right"
+				cx="120"
+				cy="97"
+				rx="8"
+				ry="14"
+				fill="#6e69ff"></ellipse>
+
+			<!-- 眼睛 (><) -->
+			<g
+				class="eye-cross left"
+				fill="none"
+				stroke="#6e69ff"
+				stroke-width="4"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+			>
+				<path d="M 74 90 L 86 97 L 74 104"></path>
+			</g>
+			<g
+				class="eye-cross right"
+				fill="none"
+				stroke="#6e69ff"
+				stroke-width="4"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+			>
+				<path d="M 126 90 L 114 97 L 126 104"></path>
+			</g>
+
+			<!-- 嘴巴 -->
+			<path
+				d="M 93 112 Q 100 108 107 112"
+				fill="none"
+				stroke="#6e69ff"
+				stroke-width="3.5"
+				stroke-linecap="round"></path>
+		</g>
+	</g>
+
+	<!-- 环绕设计：前半部分星轨 -->
+	<g transform="rotate(-15 100 100)">
+		<!-- 主轨道 (前) -->
+		<path
+			d="M 190 100 A 90 35 0 0 1 10 100"
+			fill="none"
+			stroke="url(#orbitFrontGrad)"
+			stroke-width="6"
+			stroke-linecap="round"></path>
+		<!-- 辅助虚线轨道 (前) -->
+		<path
+			d="M 175 100 A 75 25 0 0 1 25 100"
+			fill="none"
+			stroke="#8B5CF6"
+			stroke-width="2"
+			stroke-dasharray="6 6"
+			stroke-linecap="round"></path>
+		<!-- 轨道上的小行星 (前) -->
+		<circle cx="22" cy="117.5" r="6" fill="#6D28D9"></circle>
+		<circle cx="177.9" cy="117.5" r="3.5" fill="#A78BFA"></circle>
+		<circle cx="100" cy="135" r="2.5" fill="#8B5CF6"></circle>
+	</g>
+
+	<!-- 疑惑标记 -->
+	<g transform="rotate(-15 100 100)">
+		<text
+			x="86"
+			y="32"
+			fill="#00cfff"
+			font-size="36"
+			font-weight="700"
+			text-anchor="middle"
+			dominant-baseline="middle">?</text
+		>
+		<text
+			class="question-exclamation"
+			x="104"
+			y="32"
+			fill="#00cfff"
+			font-size="36"
+			font-weight="700"
+			text-anchor="middle"
+			dominant-baseline="middle">!</text
+		>
+	</g>
+
+	<!-- 背景装饰物：氛围小闪星 -->
+	<path
+		d="M 160 30 Q 160 35 165 35 Q 160 35 160 40 Q 160 35 155 35 Q 160 35 160 30 Z"
+		fill="#FBBF24"></path>
+	<path
+		d="M 35 60 Q 35 63 38 63 Q 35 63 35 66 Q 35 63 32 63 Q 35 63 35 60 Z"
+		fill="#FBBF24"></path>
+	<path
+		d="M 45 150 Q 45 154 49 154 Q 45 154 45 158 Q 45 154 41 154 Q 45 154 45 150 Z"
+		fill="#FBBF24"></path>
+	<path
+		d="M 165 160 Q 165 163 168 163 Q 165 163 165 166 Q 165 163 162 163 Q 165 163 165 160 Z"
+		fill="#FBBF24"></path>
+</svg>
+
+<script>
+	import gsap from "gsap";
+
+	const mascots = document.querySelectorAll("[data-culoo-404-mascot]");
+
+	mascots.forEach((mascot) => {
+		const normalEyes = mascot.querySelectorAll(".eye-normal");
+		const crossEyes = mascot.querySelectorAll(".eye-cross");
+		const exclamation = mascot.querySelector(".question-exclamation");
+		const shakeLayer = mascot.querySelector(".shake-layer");
+
+		if (normalEyes.length && crossEyes.length && exclamation && shakeLayer) {
+			gsap.set(crossEyes, {
+				opacity: 0,
+				scale: 0.75,
+				transformOrigin: "center center",
+			});
+
+			gsap.set(exclamation, {
+				opacity: 0,
+				y: 10,
+			});
+
+			// 用 Z-X-Z 分解定义轴线角度，避免 SVG 环境下 rotate3d(x,y,0,angle) 的轴解释偏差。
+			// 使用精确的数学填值代入，避免手算带来的误差影响，同时使得后续修改更方便
+			const center = { x: 100, y: 100 };
+			const baseTiltDeg = 6;
+			const axisPointA = { x: 100, y: 50 };
+			const axisPointB = { x: 100, y: 150 };
+
+			const rotateAround = (
+				point: { x: any; y: any },
+				pivot: { x: any; y: any },
+				degrees: number,
+			) => {
+				const rad = (degrees * Math.PI) / 180;
+				const cos = Math.cos(rad);
+				const sin = Math.sin(rad);
+				const dx = point.x - pivot.x;
+				const dy = point.y - pivot.y;
+
+				return {
+					x: pivot.x + dx * cos - dy * sin,
+					y: pivot.y + dx * sin + dy * cos,
+				};
+			};
+
+			const rotatedA = rotateAround(axisPointA, center, baseTiltDeg);
+			const rotatedB = rotateAround(axisPointB, center, baseTiltDeg);
+			const axisWorldAngleDeg =
+				(Math.atan2(rotatedA.y - rotatedB.y, rotatedA.x - rotatedB.x) * 180) /
+				Math.PI;
+			const axisLocalAngleDeg = axisWorldAngleDeg - baseTiltDeg;
+
+			const tl = gsap.timeline({
+				defaults: { ease: "power2.inOut" },
+			});
+
+			// 定义状态对象，将旋转动画分为明确的两个部分以解决只会一侧旋转的bug
+			const state = { angle: 0 };
+			const updateTransform = () => {
+				// 加入 perspective 会让 SVG 在正负角度下呈现大小差异，从而真正区分两侧
+				shakeLayer.style.transform = `translate(100px, 100px) perspective(800px) rotate(${axisLocalAngleDeg}deg) rotateX(${state.angle}deg) rotate(${-axisLocalAngleDeg}deg) translate(-100px, -100px)`;
+			};
+
+			// 将旋转角度的绝对值、持续时间等都提取为统一管理的变量
+			const baseDuration = 4; // 整体动画总时长
+			const shakeMaxAngle = 20; // 旋转角度绝对值
+			const shakeDuration = 0.5; // 单次旋转持续时间（1/4个周期）
+			const changeDuration = 0.2; // 眼神和叹号的变化持续时间
+
+			// 将向两侧旋转的动作组合为一个独立的、可重复的时间轴
+			// 解决停顿的最佳方法：使用一个进度代理(progress)，配合 Math.sin 恢复原生正弦波
+			// 这能保证中间穿过 0 度时速度达到峰值，而只在两侧最高点平滑减速，彻底消除多段动画拼凑带来的割裂感。
+			const shakeProxy = { progress: 0 };
+			const shakeCycleDuration = shakeDuration * 4; // 一个完整来回(周期)的总持续时间
+
+			const shakeSequence = gsap.timeline({
+				repeat: 1, // 修改此值可重复播放，0为只播放一次完整的流程，-1为无限循环
+			});
+
+			shakeSequence.to(shakeProxy, {
+				progress: 1,
+				duration: shakeCycleDuration,
+				ease: "none", // 禁用时间轴本身的加减速缓动，让速度完全由数学正弦曲线接管
+				onUpdate: () => {
+					// 进度 0 -> 1 恰好对应正弦波的一个完整周期 (0 -> 2π)
+					state.angle =
+						Math.sin(shakeProxy.progress * Math.PI * 2) * shakeMaxAngle;
+					updateTransform();
+				},
+			});
+
+			// 将组合好的序列加入到主时间轴起始点
+			tl.add(shakeSequence, 0);
+
+			// 开头动画 - 眼神形变，叹号快速浮现
+			tl.to(normalEyes, { opacity: 0, scale: 0.8, duration: changeDuration }, 0)
+				.to(crossEyes, { opacity: 1, scale: 1, duration: changeDuration }, 0)
+				.to(
+					exclamation,
+					{ opacity: 1, y: 0, duration: changeDuration, ease: "power3.out" },
+					0,
+				);
+
+			// 结尾动画 - 逆向恢复（发生在最后 0.2s内）
+			tl.to(
+				exclamation,
+				{ opacity: 0, y: 10, duration: changeDuration, ease: "power2.in" },
+				baseDuration - changeDuration,
+			)
+				.to(
+					crossEyes,
+					{ opacity: 0, scale: 0.8, duration: changeDuration },
+					baseDuration - changeDuration,
+				)
+				.to(
+					normalEyes,
+					{ opacity: 1, scale: 1, duration: changeDuration },
+					baseDuration - changeDuration,
+				)
+				.set(shakeLayer, { clearProps: "transform" }, baseDuration);
+		}
+	});
+</script>
