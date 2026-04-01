@@ -35,8 +35,6 @@
     <path d="M -0.3627 -1.3531 A 1.4013 1.4013 0 0 1 0.3627 -1.3531" />
     <!-- 315°~345° -->
     <path d="M 0.9911 -0.9911 A 1.4013 1.4013 0 0 1 1.3531 -0.3627" />
-
-    <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="10s" repeatCount="indefinite"/>
   </g>
 
   <!-- 眼睛 -->
