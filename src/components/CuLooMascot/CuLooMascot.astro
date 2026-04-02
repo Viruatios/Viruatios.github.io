@@ -7,11 +7,11 @@ const mascotColor = "var(--mascot-color)";
 	class="culoo-mascot"
 	data-culoo-mascot
 	xmlns="http://www.w3.org/2000/svg"
-	viewBox="-1.6 -1.6 3.2 3.2"
+	viewBox="0 0 200 200"
 	width="320"
 	height="320"
 >
-	<rect x="-1.6" y="-1.6" width="3.2" height="3.2" fill="none"></rect>
+	<rect x="0" y="0" width="200" height="200" fill="none"></rect>
 
 	<!-- 外部层 -->
 	<g class="outer-layer">
@@ -20,21 +20,21 @@ const mascotColor = "var(--mascot-color)";
 			class="orbit"
 			fill="none"
 			stroke={mascotColor}
-			stroke-width="0.1"
+			stroke-width="6.25"
 			stroke-linecap="round"
 		>
 			<!-- 15°~45° -->
-			<path d="M 1.3531 0.3627 A 1.4013 1.4013 0 0 1 0.9911 0.9911"></path>
+			<path d="M 184.57 122.67 A 87.58 87.58 0 0 1 161.94 161.94"></path>
 			<!-- 75°~105° -->
-			<path d="M 0.3627 1.3531 A 1.4013 1.4013 0 0 1 -0.3627 1.3531"></path>
+			<path d="M 122.67 184.57 A 87.58 87.58 0 0 1 77.33 184.57"></path>
 			<!-- 135°~165° -->
-			<path d="M -0.9911 0.9911 A 1.4013 1.4013 0 0 1 -1.3531 0.3627"></path>
+			<path d="M 38.06 161.94 A 87.58 87.58 0 0 1 15.43 122.67"></path>
 			<!-- 195°~225° -->
-			<path d="M -1.3531 -0.3627 A 1.4013 1.4013 0 0 1 -0.9911 -0.9911"></path>
+			<path d="M 15.43 77.33 A 87.58 87.58 0 0 1 38.06 38.06"></path>
 			<!-- 255°~285° -->
-			<path d="M -0.3627 -1.3531 A 1.4013 1.4013 0 0 1 0.3627 -1.3531"></path>
+			<path d="M 77.33 15.43 A 87.58 87.58 0 0 1 122.67 15.43"></path>
 			<!-- 315°~345° -->
-			<path d="M 0.9911 -0.9911 A 1.4013 1.4013 0 0 1 1.3531 -0.3627"></path>
+			<path d="M 161.94 38.06 A 87.58 87.58 0 0 1 184.57 77.33"></path>
 		</g>
 	</g>
 
@@ -44,33 +44,56 @@ const mascotColor = "var(--mascot-color)";
 		<polygon
 			class="hexagon-body"
 			points="
-                1,0
-                0.5,0.8660254
-                -0.5,0.8660254
-                -1,0
-                -0.5,-0.8660254
-                0.5,-0.8660254
+                162.5,100
+                131.25,154.13
+                68.75,154.13
+                37.5,100
+                68.75,45.87
+                131.25,45.87
             "
 			fill="none"
 			stroke={mascotColor}
-			stroke-width="0.1"
+			stroke-width="6.25"
 		>
 		</polygon>
 
-		<!-- 眼睛 -->
-		<g class="eyes">
-			<ellipse cx="-0.3" cy="-0.18" rx="0.12" ry="0.28" fill={mascotColor}
+		<!-- 眼睛 (豆豆眼) -->
+		<g class="eye-normal left">
+			<ellipse cx="81.25" cy="88.75" rx="7.5" ry="17.5" fill={mascotColor}
 			></ellipse>
-			<ellipse cx="0.3" cy="-0.18" rx="0.12" ry="0.28" fill={mascotColor}
+		</g>
+		<g class="eye-normal right">
+			<ellipse cx="118.75" cy="88.75" rx="7.5" ry="17.5" fill={mascotColor}
 			></ellipse>
+		</g>
+		<!-- 眼睛 (><) -->
+		<g
+			class="eye-cross left"
+			fill="none"
+			stroke={mascotColor}
+			stroke-width="6.25"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+		>
+			<path d="M 75 81.25 L 87.5 88.75 L 75 96.25"></path>
+		</g>
+		<g
+			class="eye-cross right"
+			fill="none"
+			stroke={mascotColor}
+			stroke-width="6.25"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+		>
+			<path d="M 125 81.25 L 112.5 88.75 L 125 96.25"></path>
 		</g>
 
 		<!-- w小嘴巴（可选项） -->
 		<g class="mouth">
 			<path
-				d="M -0.14 0.08 Q -0.07 0.16 0 0.08 Q 0.07 0.16 0.14 0.08"
+				d="M 91.25 105 Q 95.625 110 100 105 Q 104.375 110 108.75 105"
 				stroke={mascotColor}
-				stroke-width="0.06"
+				stroke-width="3.75"
 				fill="none"
 				stroke-linecap="round"
 				stroke-linejoin="round"></path>
@@ -78,8 +101,10 @@ const mascotColor = "var(--mascot-color)";
 
 		<!-- 腮红 -->
 		<g class="blush">
-			<ellipse cx="-0.6" cy="0.1" rx="0.16" ry="0.09" fill="#ffb6c1"></ellipse>
-			<ellipse cx="0.6" cy="0.1" rx="0.16" ry="0.09" fill="#ffb6c1"></ellipse>
+			<ellipse cx="62.5" cy="106.25" rx="10" ry="5.625" fill="#ffb6c1"
+			></ellipse>
+			<ellipse cx="137.5" cy="106.25" rx="10" ry="5.625" fill="#ffb6c1"
+			></ellipse>
 		</g>
 	</g>
 </svg>

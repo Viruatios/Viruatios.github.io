@@ -27,7 +27,9 @@ const getMascotParts = (mascot) => {
     const orbit = mascot.querySelector(".orbit");
     const orbitPaths = toArray(mascot.querySelectorAll(".orbit path"));
     const hexagonBody = mascot.querySelector(".hexagon-body");
-    const eyes = toArray(mascot.querySelectorAll(".eyes ellipse"));
+    const normalEyes = toArray(mascot.querySelectorAll(".eye-normal"));
+    const normalEyeEllipses = toArray(mascot.querySelectorAll(".eye-normal ellipse"));
+    const crossEyes = toArray(mascot.querySelectorAll(".eye-cross"));
     const mouth = mascot.querySelector(".mouth path");
     const blush = toArray(mascot.querySelectorAll(".blush ellipse"));
 
@@ -36,7 +38,9 @@ const getMascotParts = (mascot) => {
         !outerLayer ||
         !orbit ||
         !hexagonBody ||
-        !eyes.length ||
+        !normalEyes.length ||
+        !normalEyeEllipses.length ||
+        !crossEyes.length ||
         !mouth ||
         !blush.length
     ) {
@@ -49,7 +53,9 @@ const getMascotParts = (mascot) => {
         orbit,
         orbitPaths,
         hexagonBody,
-        eyes,
+        normalEyes,
+        normalEyeEllipses,
+        crossEyes,
         mouth,
         blush,
     };
@@ -62,7 +68,9 @@ const getAnimatableElements = (parts) => {
         parts.outerLayer,
         parts.orbit,
         parts.hexagonBody,
-        ...parts.eyes,
+        ...parts.normalEyes,
+        ...parts.normalEyeEllipses,
+        ...parts.crossEyes,
         parts.mouth,
         ...parts.blush,
         ...parts.orbitPaths,
@@ -78,17 +86,25 @@ const resetToBaseline = (parts) => {
 
     gsap.killTweensOf(animatableElements);
 
+    // 有动画使用 css.transform 字符串写入；这里先清空，避免动画被中断时残留矩阵影响下一轮中心点。
+    gsap.set(parts.faceLayer, {
+        css: { transform: "none" },
+    });
+
     gsap.set([parts.faceLayer, parts.outerLayer], {
         transformBox: "fill-box",
         transformOrigin: "center center",
         x: 0,
         y: 0,
         rotation: 0,
+        rotationX: 0,
+        rotationY: 0,
+        transformPerspective: 0,
         scale: 1,
         opacity: 1,
     });
 
-    gsap.set([parts.hexagonBody, parts.mouth, ...parts.eyes, ...parts.blush], {
+    gsap.set([parts.hexagonBody, parts.mouth, ...parts.normalEyes, ...parts.blush], {
         transformBox: "fill-box",
         transformOrigin: "center center",
         x: 0,
@@ -98,7 +114,13 @@ const resetToBaseline = (parts) => {
         opacity: 1,
     });
 
-    gsap.set(parts.eyes, { attr: { ry: 0.28 } });
+    gsap.set(parts.crossEyes, {
+        opacity: 0,
+        scale: 0.75,
+        transformOrigin: "center center",
+    });
+
+    gsap.set(parts.normalEyeEllipses, { attr: { ry: 17.5 } });
 
     gsap.set(parts.orbitPaths, {
         opacity: 1,
@@ -113,7 +135,7 @@ const resetToBaseline = (parts) => {
 const createVariantRegistry = () => {
     return [
         {
-            name: "VariantA_FaceWobble",
+            name: "VariantA_ShyFaceWobble",
             weight: 4,
             cooldownMs: 0,
             lastPlayedAt: -Infinity,
@@ -123,9 +145,106 @@ const createVariantRegistry = () => {
                     defaults: { ease: "power2.inOut" },
                 });
 
-                tl.to(parts.faceLayer, { rotation: 8, duration: 0.16 })
-                    .to(parts.faceLayer, { rotation: -8, duration: 0.24 })
-                    .to(parts.faceLayer, { rotation: 0, duration: 0.16 });
+                const state = {
+                    angle: 0,
+                    tilt: 0,
+                    shakeProgress: 0,
+                };
+
+                tl.set(parts.faceLayer, {
+                    transformBox: "fill-box",      // 百分比中心必须配合 fill-box，才能以当前 faceLayer 包围盒中心旋转。
+                    transformOrigin: "50% 0%",     // 使用百分比来确保旋转轴在中间位置，即使元素大小发生变化
+                    force3D: true,
+                });
+                tl.set(parts.outerLayer, {
+                    transformBox: "view-box", // view-box，确保外层圆环绕着真正的 SVG 圆心旋转，而不是子元素不规则包围盒的中心
+                    transformOrigin: "50% 50%",
+                });
+
+
+                const updateTransform = () => {
+                    // 仍保留数学波形驱动，但最终变换交给 GSAP 属性写入
+                    gsap.set(parts.faceLayer, {
+                        // 把 perspective 与 rotateX/rotateY 放在同一条 transform 字符串，避免 SVG 3D 解析分裂导致中心漂移。
+                        // 使用CSS原生写入，避免GSAP对SVG的rotate3d解析问题，可能导致根本不旋转
+                        css: {
+                            transform: `perspective(800px) rotateX(${state.tilt}deg) rotateY(${state.angle}deg)`,
+                        },
+                    });
+                };
+
+                // 扭头的最大角度规定
+                const shakeMaxAngle = 20;
+
+                // --- 环形外层自转和动画持续时间参数配置 ---
+                const V_MAX = 400; // 最大自转速度（度/秒）
+                const duration1 = 0.4; // 阶段1：加速
+                const duration2 = 1.5; // 阶段2：匀速
+                const duration3 = 0.5; // 阶段3：减速与恢复
+                const rot1 = (V_MAX * duration1) / 2;
+                const rot2 = V_MAX * duration2;
+                const rot3 = (V_MAX * duration3) / 2;
+
+                // 1) 切换眼睛 & 缩进去低头 & 外层放大并开始加速旋转
+                tl.to(parts.normalEyes, { opacity: 0, duration: 0.1 }, 0)
+                    .to(parts.normalEyeEllipses, { attr: { ry: 0.05 }, duration: 0.1 }, 0)
+                    .to(parts.crossEyes, { opacity: 1, scale: 1, duration: 0.15 }, 0)
+                    .to(state, {
+                        tilt: -30, // 表现为低下头
+                        duration: duration1,
+                        onUpdate: updateTransform,
+                    }, 0)
+                    .to(parts.outerLayer, {
+                        scale: 1.1,
+                        duration: duration1,
+                    }, 0)
+                    .to(parts.outerLayer, {
+                        rotation: `+=${rot1}`,
+                        duration: duration1,
+                        ease: "power1.in", // 平滑加速起步
+                    }, 0);
+
+                // 2) 摇头摆动 (快速摇晃几次表示害羞扭头) & 外层匀速旋转
+                tl.to(state, {
+                    shakeProgress: 1,
+                    duration: duration2 + 0.2,
+                    ease: "none",
+                    onUpdate: () => {
+                        // 用 Math.sin 进行平滑周期波动
+                        state.angle = Math.sin(state.shakeProgress * Math.PI * 5.5) * shakeMaxAngle;
+                        updateTransform();
+                    },
+                }, 0.2)
+                    .to(parts.outerLayer, {
+                        rotation: `+=${rot2}`,
+                        duration: duration2,
+                        ease: "none", // 匀速维持
+                    }, duration1);
+
+                // 3) 恢复原状 & 外层减速闭合
+                tl.to(state, {
+                    tilt: 0,
+                    angle: 0,
+                    shakeProgress: 0,
+                    duration: duration3,
+                    onUpdate: updateTransform,
+                }, ">")
+                    .to(parts.crossEyes, { opacity: 0, scale: 0.75, duration: 0.15 }, "<0.1")
+                    .to(parts.normalEyes, { opacity: 1, duration: 0.15 }, "<")
+                    .to(parts.normalEyeEllipses, { attr: { ry: 17.5 }, duration: 0.15 }, "<")
+                    .set(parts.faceLayer, {
+                        css: { transform: "none" },
+                    })
+                    .to(parts.outerLayer, {
+                        scale: 1,
+                        duration: 0.4,
+                        ease: "elastic.out(1, 0.42)",
+                    }, "<")
+                    .to(parts.outerLayer, {
+                        rotation: `+=${rot3}`,
+                        duration: duration3,
+                        ease: "power1.out", // 平滑减速停下
+                    }, duration1 + duration2);
 
                 return tl;
             },
@@ -173,7 +292,7 @@ const createVariantRegistry = () => {
                 });
 
                 tl.to(parts.blush, { scale: 1.2, duration: 0.14, yoyo: true, repeat: 1 }, 0)
-                    .to(parts.eyes, { scaleY: 0.72, duration: 0.12, yoyo: true, repeat: 1 }, 0.02);
+                    .to(parts.normalEyes, { scaleY: 0.72, duration: 0.12, yoyo: true, repeat: 1 }, 0.02);
 
                 return tl;
             },
@@ -256,7 +375,7 @@ const scheduleBlink = (ctx) => {
             onComplete: () => scheduleBlink(ctx),
         });
 
-        ctx.blinkTimeline.to(ctx.parts.eyes, {
+        ctx.blinkTimeline.to(ctx.parts.normalEyeEllipses, {
             attr: { ry: 0.0 },      // 确保动画被打断时能正确复原
             duration: 0.15,
             yoyo: true,
@@ -278,9 +397,20 @@ const pruneClickHistory = (ctx, now) => {
 const playVariant = (ctx, variant, now) => {
     stopBlink(ctx);
     resetToBaseline(ctx.parts);
-    setState(ctx, MascotState.PLAYING_VARIANT);
+    let timeline = null;
 
-    const timeline = variant.create({ parts: ctx.parts, mascot: ctx.mascot });
+    try {
+        timeline = variant.create({ parts: ctx.parts, mascot: ctx.mascot });
+    } catch (error) {
+        // 防止单个方案构建失败把状态机锁死在非 IDLE。
+        console.error("[CuLooMascot] Variant create failed:", variant.name, error);
+        resetToBaseline(ctx.parts);
+        setState(ctx, MascotState.IDLE);
+        scheduleBlink(ctx);
+        return;
+    }
+
+    setState(ctx, MascotState.PLAYING_VARIANT);
     ctx.currentTimeline = timeline;
     ctx.lastPlayedName = variant.name;
     variant.lastPlayedAt = now;
