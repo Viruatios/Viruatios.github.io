@@ -134,6 +134,7 @@ const resetToBaseline = (parts) => {
 // 每个条目是“可构建的动画方案”：name / weight / cooldownMs / create。
 const createVariantRegistry = () => {
     return [
+        // VariantA: 害羞扭头 + 外层加速自转 + 眼睛切换
         {
             name: "VariantA_ShyFaceWobble",
             weight: 4,
@@ -152,12 +153,12 @@ const createVariantRegistry = () => {
                 };
 
                 tl.set(parts.faceLayer, {
-                    transformBox: "fill-box",      // 百分比中心必须配合 fill-box，才能以当前 faceLayer 包围盒中心旋转。
+                    transformBox: "fill-box",      // 对于3D, 百分比中心必须配合 fill-box，才能以当前 faceLayer 包围盒中心旋转。
                     transformOrigin: "50% 0%",     // 使用百分比来确保旋转轴在中间位置，即使元素大小发生变化
                     force3D: true,
                 });
                 tl.set(parts.outerLayer, {
-                    transformBox: "view-box", // view-box，确保外层圆环绕着真正的 SVG 圆心旋转，而不是子元素不规则包围盒的中心
+                    transformBox: "view-box", // 对于2D, view-box确保外层圆环绕着真正的 SVG 圆心旋转，而不是子元素不规则包围盒的中心
                     transformOrigin: "50% 50%",
                 });
 
@@ -249,10 +250,11 @@ const createVariantRegistry = () => {
                 return tl;
             },
         },
+        // VariantB: 兴奋转圈 + 眼神变化
         {
-            name: "VariantB_OrbitPulse",
+            name: "VariantB_ExcitedRotation",
             weight: 3,
-            cooldownMs: 250,
+            cooldownMs: 0,
             lastPlayedAt: -Infinity,
             create: ({ parts }) => {
                 const tl = gsap.timeline({
@@ -260,39 +262,150 @@ const createVariantRegistry = () => {
                     defaults: { ease: "power2.out" },
                 });
 
-                tl.to(parts.outerLayer, { rotation: 16, duration: 0.2 }, 0)
-                    .to(
-                        parts.orbitPaths,
-                        { opacity: 0.55, duration: 0.12, stagger: 0.03 },
-                        0,
-                    )
-                    .to(parts.outerLayer, {
-                        rotation: 0,
-                        duration: 0.36,
-                        ease: "elastic.out(1, 0.45)",
-                    })
-                    .to(
-                        parts.orbitPaths,
-                        { opacity: 1, duration: 0.22, stagger: 0.03 },
-                        "<",
-                    );
+                const state = {
+                    outerAngle: 0,
+                    faceAngle: 0,
+                    shakeProgress: 0,
+                    outerProgress: 0,
+                };
+
+                tl.set(parts.faceLayer, {
+                    transformBox: "fill-box",
+                    transformOrigin: "50% 50%",
+                    force3D: true,
+                });
+                tl.set(parts.outerLayer, {
+                    transformBox: "fill-box",
+                    transformOrigin: "50% 50%",
+                    force3D: true,
+                });
+
+                const updateTransform = () => {
+                    gsap.set(parts.faceLayer, {
+                        css: {
+                            transform: `perspective(800px) rotateY(${state.faceAngle}deg)`,
+                        },
+                    });
+                    gsap.set(parts.outerLayer, {
+                        css: {
+                            transform: `perspective(800px) rotateY(${state.outerAngle}deg)`,
+                        },
+                    });
+                };
+
+                // 切换眼睛
+                tl.to(parts.normalEyes, { opacity: 0, duration: 0.1 }, 0)
+                    .to(parts.normalEyeEllipses, { attr: { ry: 0.05 }, duration: 0.1 }, 0)
+                    .to(parts.crossEyes, { opacity: 1, scale: 1, duration: 0.15 }, 0);
+
+                // 开始旋转，内外层反向，外层稍延后
+                tl.to(state, {
+                    shakeProgress: 1,
+                    duration: 1.5,
+                    ease: "none",
+                    onUpdate: () => {
+                        state.faceAngle = Math.sin(state.shakeProgress * Math.PI / 2) * 360; // 内层转一圈
+                        updateTransform();
+                    },
+                }, 0.2)
+                    .to(state, {
+                        outerProgress: 1,
+                        duration: 1.5,
+                        ease: "none",
+                        onUpdate: () => {
+                            state.outerAngle = Math.sin(state.outerProgress * Math.PI / 2) * 360; // 外层转一圈
+                            updateTransform();
+                        },
+                    }, 0.35);
+
+                // 恢复原状
+                tl.to(state, {
+                    faceAngle: 0,
+                    outerAngle: 0,
+                    shakeProgress: 0,
+                    outerProgress: 0,
+                    duration: 0,
+                    onUpdate: updateTransform,
+                }, ">")
+                    .to(parts.crossEyes, { opacity: 0, scale: 0.75, duration: 0.15 }, "<0.1")
+                    .to(parts.normalEyes, { opacity: 1, duration: 0.15 }, "<")
+                    .to(parts.normalEyeEllipses, { attr: { ry: 17.5 }, duration: 0.15 }, "<")
+                    .set([parts.faceLayer, parts.outerLayer], {
+                        css: { transform: "none" },
+                    });
 
                 return tl;
             },
         },
+        // VariantC: 跳跃
         {
-            name: "VariantC_BlushBounce",
-            weight: 2,
-            cooldownMs: 400,
+            name: "VariantC_Jump",
+            weight: 3,
+            cooldownMs: 0,
             lastPlayedAt: -Infinity,
             create: ({ parts }) => {
                 const tl = gsap.timeline({
                     paused: true,
-                    defaults: { ease: "power2.inOut" },
                 });
 
-                tl.to(parts.blush, { scale: 1.2, duration: 0.14, yoyo: true, repeat: 1 }, 0)
-                    .to(parts.normalEyes, { scaleY: 0.72, duration: 0.12, yoyo: true, repeat: 1 }, 0.02);
+                // 设置 transformOrigin 以便在底部进行变形（蓄力、落地缓冲）
+                tl.set(parts.faceLayer, { transformOrigin: "50% 100%" });
+
+                // 1. 蓄力：向下压缩，眼睛替换为 crossEyes
+                tl.to(parts.faceLayer, {
+                    y: 8,
+                    scaleY: 0.85,
+                    scaleX: 1.05,
+                    duration: 0.1,
+                    ease: "power2.inOut"
+                }, "anticipate")
+                    .to(parts.normalEyes, { opacity: 0, duration: 0.1 }, "anticipate")
+                    .to(parts.normalEyeEllipses, { attr: { ry: 0.05 }, duration: 0.1 }, "anticipate")
+                    .to(parts.crossEyes, { opacity: 1, scale: 1, duration: 0.1 }, "anticipate")
+
+                    // --- 第一次跳跃 ---
+                    .to(parts.faceLayer, {
+                        y: -20,
+                        scaleY: 1.0,
+                        scaleX: 0.95,
+                        duration: 0.15,
+                        ease: "power2.out"
+                    }, "jump1")
+                    .to(parts.faceLayer, {
+                        y: 5,
+                        scaleY: 0.85,
+                        scaleX: 1.05,
+                        duration: 0.12,
+                        ease: "power2.in"
+                    }, "fall1")
+
+                    // --- 第二次跳跃（节奏稍微加快，高度略低） ---
+                    .to(parts.faceLayer, {
+                        y: -20,
+                        scaleY: 1.0,
+                        scaleX: 0.95,
+                        duration: 0.15,
+                        ease: "power2.out",
+                        delay: 0.05,        // 在落地后稍作停顿再起跳，增加节奏感
+                    }, "jump2")
+                    .to(parts.faceLayer, {
+                        y: 0,
+                        scaleY: 0.9,
+                        scaleX: 1.05,
+                        duration: 0.1,
+                        ease: "power2.in"
+                    }, "fall2")
+
+                    // 落地缓冲：恢复原状，眼睛切回 normalEyes
+                    .to(parts.faceLayer, {
+                        scaleY: 1,
+                        scaleX: 1,
+                        duration: 0.2,
+                        ease: "bounce.out"
+                    }, "land")
+                    .to(parts.crossEyes, { opacity: 0, scale: 0.75, duration: 0.15 }, "land")
+                    .to(parts.normalEyes, { opacity: 1, duration: 0.15 }, "land")
+                    .to(parts.normalEyeEllipses, { attr: { ry: 17.5 }, duration: 0.15 }, "land");
 
                 return tl;
             },
