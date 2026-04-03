@@ -362,6 +362,7 @@ const createVariantRegistry = () => {
                     .to(parts.normalEyes, { opacity: 0, duration: 0.1 }, "anticipate")
                     .to(parts.normalEyeEllipses, { attr: { ry: 0.05 }, duration: 0.1 }, "anticipate")
                     .to(parts.crossEyes, { opacity: 1, scale: 1, duration: 0.1 }, "anticipate")
+                    .to(parts.outerLayer, { y: -1.86, scale: 1.08, duration: 0.1, ease: "none" }, 0)
 
                     // --- 第一次跳跃 ---
                     .to(parts.faceLayer, {
@@ -405,7 +406,8 @@ const createVariantRegistry = () => {
                     }, "land")
                     .to(parts.crossEyes, { opacity: 0, scale: 0.75, duration: 0.15 }, "land")
                     .to(parts.normalEyes, { opacity: 1, duration: 0.15 }, "land")
-                    .to(parts.normalEyeEllipses, { attr: { ry: 17.5 }, duration: 0.15 }, "land");
+                    .to(parts.normalEyeEllipses, { attr: { ry: 17.5 }, duration: 0.15 }, "land")
+                    .to(parts.outerLayer, { y: 0, scale: 1, duration: 0.4, ease: "elastic.out(1, 0.42)" }, "land");
 
                 return tl;
             },
