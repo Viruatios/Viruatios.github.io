@@ -23,7 +23,13 @@ const toArray = (list) => Array.from(list ?? []);
 // 只要关键元素缺失就返回 null，避免后续 timeline 对空节点操作导致异常。
 const getMascotParts = (mascot) => {
     const faceLayer = mascot.querySelector(".face-layer");
+    const faceLayerRotate = mascot.querySelector(".face-layer-rotate");
+    const faceLayerTranslate = mascot.querySelector(".face-layer-translate");
+    const faceLayerScale = mascot.querySelector(".face-layer-scale");
     const outerLayer = mascot.querySelector(".outer-layer");
+    const outerLayerRotate = mascot.querySelector(".outer-layer-rotate");
+    const outerLayerTranslate = mascot.querySelector(".outer-layer-translate");
+    const outerLayerScale = mascot.querySelector(".outer-layer-scale");
     const orbit = mascot.querySelector(".orbit");
     const orbitPaths = toArray(mascot.querySelectorAll(".orbit path"));
     const hexagonBody = mascot.querySelector(".hexagon-body");
@@ -35,7 +41,13 @@ const getMascotParts = (mascot) => {
 
     if (
         !faceLayer ||
+        !faceLayerRotate ||
+        !faceLayerTranslate ||
+        !faceLayerScale ||
         !outerLayer ||
+        !outerLayerRotate ||
+        !outerLayerTranslate ||
+        !outerLayerScale ||
         !orbit ||
         !hexagonBody ||
         !normalEyes.length ||
@@ -49,7 +61,13 @@ const getMascotParts = (mascot) => {
 
     return {
         faceLayer,
+        faceLayerRotate,
+        faceLayerTranslate,
+        faceLayerScale,
         outerLayer,
+        outerLayerRotate,
+        outerLayerTranslate,
+        outerLayerScale,
         orbit,
         orbitPaths,
         hexagonBody,
@@ -65,7 +83,13 @@ const getMascotParts = (mascot) => {
 const getAnimatableElements = (parts) => {
     return [
         parts.faceLayer,
+        parts.faceLayerRotate,
+        parts.faceLayerTranslate,
+        parts.faceLayerScale,
         parts.outerLayer,
+        parts.outerLayerRotate,
+        parts.outerLayerTranslate,
+        parts.outerLayerScale,
         parts.orbit,
         parts.hexagonBody,
         ...parts.normalEyes,
@@ -87,11 +111,24 @@ const resetToBaseline = (parts) => {
     gsap.killTweensOf(animatableElements);
 
     // 有动画使用 css.transform 字符串写入；这里先清空，避免动画被中断时残留矩阵影响下一轮中心点。
-    gsap.set(parts.faceLayer, {
+    gsap.set(parts.faceLayerRotate, {
+        css: { transform: "none" },
+    });
+    gsap.set(parts.outerLayerRotate, {
         css: { transform: "none" },
     });
 
-    gsap.set([parts.faceLayer, parts.outerLayer], {
+    gsap.set(parts.faceLayer, {
+        transformBox: "fill-box",
+        transformOrigin: "center center",
+        x: 0,
+        y: 0,
+        rotation: 0,
+        scale: 1,
+        opacity: 1,
+    });
+
+    gsap.set(parts.faceLayerRotate, {
         transformBox: "fill-box",
         transformOrigin: "center center",
         x: 0,
@@ -100,6 +137,59 @@ const resetToBaseline = (parts) => {
         rotationX: 0,
         rotationY: 0,
         transformPerspective: 0,
+        scale: 1,
+        opacity: 1,
+    });
+
+    gsap.set(parts.faceLayerTranslate, {
+        transformBox: "fill-box",
+        transformOrigin: "center center",
+        x: 0,
+        y: 0,
+        rotation: 0,
+        scale: 1,
+        opacity: 1,
+    });
+
+    gsap.set(parts.faceLayerScale, {
+        transformBox: "fill-box",
+        transformOrigin: "center center",
+        x: 0,
+        y: 0,
+        rotation: 0,
+        scale: 1,
+        opacity: 1,
+    });
+
+    gsap.set(parts.outerLayerRotate, {
+        transformBox: "fill-box",
+        transformOrigin: "center center",
+        x: 0,
+        y: 0,
+        rotation: 0,
+        rotationX: 0,
+        rotationY: 0,
+        transformPerspective: 0,
+        scale: 1,
+        opacity: 1,
+    });
+
+    gsap.set(parts.outerLayerTranslate, {
+        transformBox: "fill-box",
+        transformOrigin: "center center",
+        x: 0,
+        y: 0,
+        rotation: 0,
+        scale: 1,
+        opacity: 1,
+    });
+
+    gsap.set(parts.outerLayerScale, {
+        transformBox: "fill-box",
+        transformOrigin: "center center",
+        x: 0,
+        y: 0,
+        rotation: 0,
         scale: 1,
         opacity: 1,
     });
@@ -137,7 +227,7 @@ const createVariantRegistry = () => {
         // VariantA: 害羞扭头 + 外层加速自转 + 眼睛切换
         {
             name: "VariantA_ShyFaceWobble",
-            weight: 4,
+            weight: 3,
             cooldownMs: 0,
             lastPlayedAt: -Infinity,
             create: ({ parts }) => {
@@ -152,20 +242,26 @@ const createVariantRegistry = () => {
                     shakeProgress: 0,
                 };
 
-                tl.set(parts.faceLayer, {
+                tl.set(parts.faceLayerRotate, {
                     transformBox: "fill-box",      // 对于3D, 百分比中心必须配合 fill-box，才能以当前 faceLayer 包围盒中心旋转。
-                    transformOrigin: "50% 0%",     // 使用百分比来确保旋转轴在中间位置，即使元素大小发生变化
+                    transformOrigin: "50% 80%",     // 使用百分比来确保旋转轴在中间位置，即使元素大小发生变化
                     force3D: true,
                 });
-                tl.set(parts.outerLayer, {
+
+                tl.set(parts.outerLayerScale, {
+                    // 把 outerLayerScale 的 pivot 也设成和 outerLayerRotate 完全一致（同为 view-box 圆心），否则会导致rotate偏移
+                    transformBox: "view-box",
+                    transformOrigin: "center center",
+                });
+                tl.set(parts.outerLayerRotate, {
                     transformBox: "view-box", // 对于2D, view-box确保外层圆环绕着真正的 SVG 圆心旋转，而不是子元素不规则包围盒的中心
-                    transformOrigin: "50% 50%",
+                    transformOrigin: "center center",
                 });
 
 
                 const updateTransform = () => {
                     // 仍保留数学波形驱动，但最终变换交给 GSAP 属性写入
-                    gsap.set(parts.faceLayer, {
+                    gsap.set(parts.faceLayerRotate, {
                         // 把 perspective 与 rotateX/rotateY 放在同一条 transform 字符串，避免 SVG 3D 解析分裂导致中心漂移。
                         // 使用CSS原生写入，避免GSAP对SVG的rotate3d解析问题，可能导致根本不旋转
                         css: {
@@ -195,11 +291,11 @@ const createVariantRegistry = () => {
                         duration: duration1,
                         onUpdate: updateTransform,
                     }, 0)
-                    .to(parts.outerLayer, {
+                    .to(parts.outerLayerScale, {
                         scale: 1.1,
                         duration: duration1,
                     }, 0)
-                    .to(parts.outerLayer, {
+                    .to(parts.outerLayerRotate, {
                         rotation: `+=${rot1}`,
                         duration: duration1,
                         ease: "power1.in", // 平滑加速起步
@@ -216,7 +312,7 @@ const createVariantRegistry = () => {
                         updateTransform();
                     },
                 }, 0.2)
-                    .to(parts.outerLayer, {
+                    .to(parts.outerLayerRotate, {
                         rotation: `+=${rot2}`,
                         duration: duration2,
                         ease: "none", // 匀速维持
@@ -233,15 +329,15 @@ const createVariantRegistry = () => {
                     .to(parts.crossEyes, { opacity: 0, scale: 0.75, duration: 0.15 }, "<0.1")
                     .to(parts.normalEyes, { opacity: 1, duration: 0.15 }, "<")
                     .to(parts.normalEyeEllipses, { attr: { ry: 17.5 }, duration: 0.15 }, "<")
-                    .set(parts.faceLayer, {
+                    .set(parts.faceLayerRotate, {
                         css: { transform: "none" },
                     })
-                    .to(parts.outerLayer, {
+                    .to(parts.outerLayerScale, {
                         scale: 1,
                         duration: 0.4,
                         ease: "elastic.out(1, 0.42)",
                     }, "<")
-                    .to(parts.outerLayer, {
+                    .to(parts.outerLayerRotate, {
                         rotation: `+=${rot3}`,
                         duration: duration3,
                         ease: "power1.out", // 平滑减速停下
@@ -269,24 +365,24 @@ const createVariantRegistry = () => {
                     outerProgress: 0,
                 };
 
-                tl.set(parts.faceLayer, {
+                tl.set(parts.faceLayerRotate, {
                     transformBox: "fill-box",
                     transformOrigin: "50% 50%",
                     force3D: true,
                 });
-                tl.set(parts.outerLayer, {
+                tl.set(parts.outerLayerRotate, {
                     transformBox: "fill-box",
                     transformOrigin: "50% 50%",
                     force3D: true,
                 });
 
                 const updateTransform = () => {
-                    gsap.set(parts.faceLayer, {
+                    gsap.set(parts.faceLayerRotate, {
                         css: {
                             transform: `perspective(800px) rotateY(${state.faceAngle}deg)`,
                         },
                     });
-                    gsap.set(parts.outerLayer, {
+                    gsap.set(parts.outerLayerRotate, {
                         css: {
                             transform: `perspective(800px) rotateY(${state.outerAngle}deg)`,
                         },
@@ -330,7 +426,7 @@ const createVariantRegistry = () => {
                     .to(parts.crossEyes, { opacity: 0, scale: 0.75, duration: 0.15 }, "<0.1")
                     .to(parts.normalEyes, { opacity: 1, duration: 0.15 }, "<")
                     .to(parts.normalEyeEllipses, { attr: { ry: 17.5 }, duration: 0.15 }, "<")
-                    .set([parts.faceLayer, parts.outerLayer], {
+                    .set([parts.faceLayerRotate, parts.outerLayerRotate], {
                         css: { transform: "none" },
                     });
 
@@ -349,56 +445,78 @@ const createVariantRegistry = () => {
                 });
 
                 // 设置 transformOrigin 以便在底部进行变形（蓄力、落地缓冲）
-                tl.set(parts.faceLayer, { transformOrigin: "50% 100%" });
+                tl.set(parts.faceLayerScale, { transformOrigin: "50% 100%" });
 
                 // 1. 蓄力：向下压缩，眼睛替换为 crossEyes
-                tl.to(parts.faceLayer, {
+                tl.to(parts.faceLayerTranslate, {
                     y: 8,
-                    scaleY: 0.85,
-                    scaleX: 1.05,
-                    duration: 0.1,
+                    duration: 0.15,
                     ease: "power2.inOut"
                 }, "anticipate")
-                    .to(parts.normalEyes, { opacity: 0, duration: 0.1 }, "anticipate")
-                    .to(parts.normalEyeEllipses, { attr: { ry: 0.05 }, duration: 0.1 }, "anticipate")
-                    .to(parts.crossEyes, { opacity: 1, scale: 1, duration: 0.1 }, "anticipate")
-                    .to(parts.outerLayer, { y: -1.86, scale: 1.08, duration: 0.1, ease: "none" }, 0)
-
-                    // --- 第一次跳跃 ---
-                    .to(parts.faceLayer, {
-                        y: -20,
-                        scaleY: 1.0,
-                        scaleX: 0.95,
-                        duration: 0.15,
-                        ease: "power2.out"
-                    }, "jump1")
-                    .to(parts.faceLayer, {
-                        y: 5,
+                    .to(parts.faceLayerScale, {
                         scaleY: 0.85,
                         scaleX: 1.05,
-                        duration: 0.12,
+                        duration: 0.15,
+                        ease: "power2.inOut"
+                    }, "anticipate")
+                    .to(parts.normalEyes, { opacity: 0, duration: 0.15 }, "anticipate")
+                    .to(parts.normalEyeEllipses, { attr: { ry: 0.05 }, duration: 0.15 }, "anticipate")
+                    .to(parts.crossEyes, { opacity: 1, scale: 1, duration: 0.15 }, "anticipate")
+                    .to(parts.outerLayerTranslate, { y: -1.86, duration: 0.1, ease: "none" }, 0)
+                    .to(parts.outerLayerScale, { scale: 1.08, duration: 0.1, ease: "none" }, 0)
+
+                    // --- 第一次跳跃 ---
+                    .to(parts.faceLayerTranslate, {
+                        y: -20,
+                        duration: 0.2,
+                        ease: "power2.out"
+                    }, "jump1")
+                    .to(parts.faceLayerScale, {
+                        scaleY: 1.0,
+                        scaleX: 0.95,
+                        duration: 0.2,
+                        ease: "power2.out"
+                    }, "jump1")
+                    .to(parts.faceLayerTranslate, {
+                        y: 5,
+                        duration: 0.2,
+                        ease: "power2.in"
+                    }, "fall1")
+                    .to(parts.faceLayerScale, {
+                        scaleY: 0.85,
+                        scaleX: 1.05,
+                        duration: 0.2,
                         ease: "power2.in"
                     }, "fall1")
 
                     // --- 第二次跳跃（节奏稍微加快，高度略低） ---
-                    .to(parts.faceLayer, {
+                    .to(parts.faceLayerTranslate, {
                         y: -20,
-                        scaleY: 1.0,
-                        scaleX: 0.95,
-                        duration: 0.15,
+                        duration: 0.2,
                         ease: "power2.out",
                         delay: 0.05,        // 在落地后稍作停顿再起跳，增加节奏感
                     }, "jump2")
-                    .to(parts.faceLayer, {
+                    .to(parts.faceLayerScale, {
+                        scaleY: 1.0,
+                        scaleX: 0.95,
+                        duration: 0.2,
+                        ease: "power2.out",
+                        delay: 0.05,        // 在落地后稍作停顿再起跳，增加节奏感
+                    }, "jump2")
+                    .to(parts.faceLayerTranslate, {
                         y: 0,
+                        duration: 0.2,
+                        ease: "power2.in"
+                    }, "fall2")
+                    .to(parts.faceLayerScale, {
                         scaleY: 0.9,
                         scaleX: 1.05,
-                        duration: 0.1,
+                        duration: 0.2,
                         ease: "power2.in"
                     }, "fall2")
 
                     // 落地缓冲：恢复原状，眼睛切回 normalEyes
-                    .to(parts.faceLayer, {
+                    .to(parts.faceLayerScale, {
                         scaleY: 1,
                         scaleX: 1,
                         duration: 0.2,
@@ -407,7 +525,8 @@ const createVariantRegistry = () => {
                     .to(parts.crossEyes, { opacity: 0, scale: 0.75, duration: 0.15 }, "land")
                     .to(parts.normalEyes, { opacity: 1, duration: 0.15 }, "land")
                     .to(parts.normalEyeEllipses, { attr: { ry: 17.5 }, duration: 0.15 }, "land")
-                    .to(parts.outerLayer, { y: 0, scale: 1, duration: 0.4, ease: "elastic.out(1, 0.42)" }, "land");
+                    .to(parts.outerLayerTranslate, { y: 0, duration: 0.4, ease: "elastic.out(1, 0.42)" }, "land")
+                    .to(parts.outerLayerScale, { scale: 1, duration: 0.4, ease: "elastic.out(1, 0.42)" }, "land");
 
                 return tl;
             },
@@ -452,10 +571,10 @@ const createRageTimeline = ({ parts }) => {
     });
 
     // 先用占位版高优先级动画承载框架，后续可替换为更复杂表现。
-    tl.to(parts.faceLayer, { scale: 0.86, duration: 0.12 })
-        .to(parts.faceLayer, { scale: 1, duration: 0.22, ease: "elastic.out(1, 0.42)" })
-        .to(parts.outerLayer, { rotation: 22, duration: 0.16 }, 0)
-        .to(parts.outerLayer, { rotation: 0, duration: 0.28, ease: "power3.out" }, ">-0.04");
+    tl.to(parts.faceLayerScale, { scale: 0.86, duration: 0.12 })
+        .to(parts.faceLayerScale, { scale: 1, duration: 0.22, ease: "elastic.out(1, 0.42)" })
+        .to(parts.outerLayerRotate, { rotation: 22, duration: 0.16 }, 0)
+        .to(parts.outerLayerRotate, { rotation: 0, duration: 0.28, ease: "power3.out" }, ">-0.04");
 
     return tl;
 };
