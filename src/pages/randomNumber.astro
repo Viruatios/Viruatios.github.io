@@ -37,13 +37,14 @@ const pageTitle = "随机数生成器";
 
 	<script>
 		let changingSeed = 0;
+		const CHANGING_SEED_UPDATE_INTERVAL_MS = 200;
 		const seedSourceLabelMap = {
 			time: "时间戳",
 			changing: "变化值",
 		};
 		const changingSeedElement = document.getElementById("changing-seed");
-		const minNumberInput = document.getElementById("min-number");
-		const maxNumberInput = document.getElementById("max-number");
+		const minNumberInputElement = document.getElementById("min-number");
+		const maxNumberInputElement = document.getElementById("max-number");
 		const seedSourceSelectElement = document.getElementById("seed-source");
 		const generateButtonElement = document.getElementById("generate-btn");
 		const randomResultElement = document.getElementById("random-result");
@@ -57,7 +58,11 @@ const pageTitle = "随机数生成器";
 			}
 		};
 
-		// 基于 Mulberry32 的轻量级可复现伪随机算法，仅用于界面展示，不适用于安全场景。
+		/**
+		 * 基于 Mulberry32 的轻量级可复现伪随机算法（非安全用途）。
+		 * @param {number} seed
+		 * @returns {number} [0, 1) 区间内的浮点数
+		 */
 		const seededRandom = (seed) => {
 			let t = seed >>> 0;
 			t += 0x6d2b79f5;
@@ -68,8 +73,8 @@ const pageTitle = "随机数生成器";
 
 		const generateRandomNumber = () => {
 			if (
-				!(minNumberInput instanceof HTMLInputElement) ||
-				!(maxNumberInput instanceof HTMLInputElement) ||
+				!(minNumberInputElement instanceof HTMLInputElement) ||
+				!(maxNumberInputElement instanceof HTMLInputElement) ||
 				!(seedSourceSelectElement instanceof HTMLSelectElement) ||
 				!(randomResultElement instanceof HTMLElement) ||
 				!(seedUsedElement instanceof HTMLElement) ||
@@ -78,8 +83,8 @@ const pageTitle = "随机数生成器";
 				return;
 			}
 
-			const min = Number(minNumberInput.value);
-			const max = Number(maxNumberInput.value);
+			const min = Number(minNumberInputElement.value);
+			const max = Number(maxNumberInputElement.value);
 
 			if (!Number.isFinite(min) || !Number.isFinite(max)) {
 				errorMessageElement.textContent = "请输入有效数字范围。";
@@ -111,7 +116,10 @@ const pageTitle = "随机数生成器";
 		};
 
 		updateChangingSeed();
-		const changingSeedIntervalId = setInterval(updateChangingSeed, 200);
+		const changingSeedIntervalId = setInterval(
+			updateChangingSeed,
+			CHANGING_SEED_UPDATE_INTERVAL_MS
+		);
 		window.addEventListener("pagehide", () => {
 			clearInterval(changingSeedIntervalId);
 		});
