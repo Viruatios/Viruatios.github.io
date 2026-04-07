@@ -1,0 +1,127 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const pageTitle = "随机数生成器";
+---
+
+<BaseLayout pageTitle={pageTitle}>
+	<section class="random-number-page">
+		<p>输入自定义数字范围，并选择随机种子来源后生成结果。</p>
+
+		<div class="input-row">
+			<label for="min-number">最小值</label>
+			<input id="min-number" type="number" value="1" />
+		</div>
+
+		<div class="input-row">
+			<label for="max-number">最大值</label>
+			<input id="max-number" type="number" value="100" />
+		</div>
+
+		<div class="input-row">
+			<label for="seed-source">种子来源</label>
+			<select id="seed-source">
+				<option value="time">运行时时间</option>
+				<option value="changing">变化值</option>
+			</select>
+		</div>
+
+		<p>当前变化值：<span id="changing-seed">0</span></p>
+
+		<button id="generate-btn" type="button">生成随机数</button>
+
+		<p>随机结果：<strong id="random-result">-</strong></p>
+		<p id="seed-used">使用的种子：-</p>
+		<p id="error-message" class="error-message" aria-live="polite"></p>
+	</section>
+
+	<script>
+		let changingSeed = 0;
+		const changingSeedElement = document.getElementById("changing-seed");
+		const minInput = document.getElementById("min-number");
+		const maxInput = document.getElementById("max-number");
+		const seedSourceSelect = document.getElementById("seed-source");
+		const generateButton = document.getElementById("generate-btn");
+		const randomResult = document.getElementById("random-result");
+		const seedUsed = document.getElementById("seed-used");
+		const errorMessage = document.getElementById("error-message");
+
+		const updateChangingSeed = () => {
+			changingSeed = Math.floor(performance.now());
+			if (changingSeedElement) {
+				changingSeedElement.textContent = String(changingSeed);
+			}
+			requestAnimationFrame(updateChangingSeed);
+		};
+
+		const seededRandom = (seed) => {
+			const x = Math.sin(seed) * 10000;
+			return x - Math.floor(x);
+		};
+
+		const generateRandomNumber = () => {
+			if (
+				!(minInput instanceof HTMLInputElement) ||
+				!(maxInput instanceof HTMLInputElement) ||
+				!(seedSourceSelect instanceof HTMLSelectElement) ||
+				!(randomResult instanceof HTMLElement) ||
+				!(seedUsed instanceof HTMLElement) ||
+				!(errorMessage instanceof HTMLElement)
+			) {
+				return;
+			}
+
+			const min = Number(minInput.value);
+			const max = Number(maxInput.value);
+
+			if (!Number.isFinite(min) || !Number.isFinite(max)) {
+				errorMessage.textContent = "请输入有效数字范围。";
+				return;
+			}
+
+			if (!Number.isInteger(min) || !Number.isInteger(max)) {
+				errorMessage.textContent = "请输入整数范围。";
+				return;
+			}
+
+			if (min > max) {
+				errorMessage.textContent = "最小值不能大于最大值。";
+				return;
+			}
+
+			errorMessage.textContent = "";
+
+			const useTimeSeed = seedSourceSelect.value === "time";
+			const seed = useTimeSeed ? Date.now() : changingSeed;
+			const randomValue = seededRandom(seed);
+			const value = Math.floor(randomValue * (max - min + 1)) + min;
+
+			randomResult.textContent = String(value);
+			seedUsed.textContent = `使用的种子：${seed}（${useTimeSeed ? "运行时时间" : "变化值"}）`;
+		};
+
+		updateChangingSeed();
+
+		if (generateButton instanceof HTMLButtonElement) {
+			generateButton.addEventListener("click", generateRandomNumber);
+		}
+	</script>
+
+	<style>
+		.random-number-page {
+			max-width: 32rem;
+		}
+
+		.input-row {
+			display: flex;
+			flex-direction: column;
+			gap: 0.5rem;
+			margin-bottom: 1rem;
+		}
+
+		.error-message {
+			color: #e53935;
+			min-height: 1.5rem;
+		}
+	</style>
+</BaseLayout>
