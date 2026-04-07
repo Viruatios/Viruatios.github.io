@@ -21,7 +21,7 @@ const pageTitle = "随机数生成器";
 		<div class="input-row">
 			<label for="seed-source">种子来源</label>
 			<select id="seed-source">
-				<option value="time">运行时时间</option>
+				<option value="time">时间戳</option>
 				<option value="changing">变化值</option>
 			</select>
 		</div>
@@ -54,6 +54,7 @@ const pageTitle = "随机数生成器";
 			requestAnimationFrame(updateChangingSeed);
 		};
 
+		// 轻量级、可复现的伪随机算法，仅用于界面展示，不适用于安全场景。
 		const seededRandom = (seed) => {
 			const x = Math.sin(seed) * 10000;
 			return x - Math.floor(x);
@@ -93,11 +94,12 @@ const pageTitle = "随机数生成器";
 
 			const useTimeSeed = seedSourceSelect.value === "time";
 			const seed = useTimeSeed ? Date.now() : changingSeed;
+			const seedLabel = seedSourceSelect.selectedOptions[0]?.textContent?.trim() ?? seedSourceSelect.value;
 			const randomValue = seededRandom(seed);
 			const value = Math.floor(randomValue * (max - min + 1)) + min;
 
 			randomResult.textContent = String(value);
-			seedUsed.textContent = `使用的种子：${seed}（${useTimeSeed ? "运行时时间" : "变化值"}）`;
+			seedUsed.textContent = `使用的种子：${seed}（${seedLabel}）`;
 		};
 
 		updateChangingSeed();
