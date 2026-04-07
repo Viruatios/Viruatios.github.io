@@ -42,13 +42,13 @@ const pageTitle = "随机数生成器";
 			changing: "变化值",
 		};
 		const changingSeedElement = document.getElementById("changing-seed");
-		const minInput = document.getElementById("min-number");
-		const maxInput = document.getElementById("max-number");
-		const seedSourceSelect = document.getElementById("seed-source");
-		const generateButton = document.getElementById("generate-btn");
-		const randomResult = document.getElementById("random-result");
-		const seedUsed = document.getElementById("seed-used");
-		const errorMessage = document.getElementById("error-message");
+		const minNumberInput = document.getElementById("min-number");
+		const maxNumberInput = document.getElementById("max-number");
+		const seedSourceSelectElement = document.getElementById("seed-source");
+		const generateButtonElement = document.getElementById("generate-btn");
+		const randomResultElement = document.getElementById("random-result");
+		const seedUsedElement = document.getElementById("seed-used");
+		const errorMessageElement = document.getElementById("error-message");
 
 		const updateChangingSeed = () => {
 			changingSeed = Math.floor(performance.now());
@@ -57,7 +57,7 @@ const pageTitle = "随机数生成器";
 			}
 		};
 
-		// 轻量级、可复现的伪随机算法，仅用于界面展示，不适用于安全场景。
+		// 基于 Mulberry32 的轻量级可复现伪随机算法，仅用于界面展示，不适用于安全场景。
 		const seededRandom = (seed) => {
 			let t = seed >>> 0;
 			t += 0x6d2b79f5;
@@ -68,52 +68,56 @@ const pageTitle = "随机数生成器";
 
 		const generateRandomNumber = () => {
 			if (
-				!(minInput instanceof HTMLInputElement) ||
-				!(maxInput instanceof HTMLInputElement) ||
-				!(seedSourceSelect instanceof HTMLSelectElement) ||
-				!(randomResult instanceof HTMLElement) ||
-				!(seedUsed instanceof HTMLElement) ||
-				!(errorMessage instanceof HTMLElement)
+				!(minNumberInput instanceof HTMLInputElement) ||
+				!(maxNumberInput instanceof HTMLInputElement) ||
+				!(seedSourceSelectElement instanceof HTMLSelectElement) ||
+				!(randomResultElement instanceof HTMLElement) ||
+				!(seedUsedElement instanceof HTMLElement) ||
+				!(errorMessageElement instanceof HTMLElement)
 			) {
 				return;
 			}
 
-			const min = Number(minInput.value);
-			const max = Number(maxInput.value);
+			const min = Number(minNumberInput.value);
+			const max = Number(maxNumberInput.value);
 
 			if (!Number.isFinite(min) || !Number.isFinite(max)) {
-				errorMessage.textContent = "请输入有效数字范围。";
+				errorMessageElement.textContent = "请输入有效数字范围。";
 				return;
 			}
 
 			if (!Number.isInteger(min) || !Number.isInteger(max)) {
-				errorMessage.textContent = "请输入整数范围。";
+				errorMessageElement.textContent = "请输入整数范围。";
 				return;
 			}
 
 			if (min > max) {
-				errorMessage.textContent = "最小值不能大于最大值。";
+				errorMessageElement.textContent = "最小值不能大于最大值。";
 				return;
 			}
 
-			errorMessage.textContent = "";
+			errorMessageElement.textContent = "";
 
-			const useTimeSeed = seedSourceSelect.value === "time";
+			const useTimeSeed = seedSourceSelectElement.value === "time";
 			const seed = useTimeSeed ? Date.now() : changingSeed;
 			const seedLabel =
-				seedSourceLabelMap[seedSourceSelect.value] ?? seedSourceSelect.value;
+				seedSourceLabelMap[seedSourceSelectElement.value] ??
+				seedSourceSelectElement.value;
 			const randomValue = seededRandom(seed);
 			const value = Math.floor(randomValue * (max - min + 1)) + min;
 
-			randomResult.textContent = String(value);
-			seedUsed.textContent = `使用的种子：${seed}（${seedLabel}）`;
+			randomResultElement.textContent = String(value);
+			seedUsedElement.textContent = `使用的种子：${seed}（${seedLabel}）`;
 		};
 
 		updateChangingSeed();
-		setInterval(updateChangingSeed, 200);
+		const changingSeedIntervalId = setInterval(updateChangingSeed, 200);
+		window.addEventListener("pagehide", () => {
+			clearInterval(changingSeedIntervalId);
+		});
 
-		if (generateButton instanceof HTMLButtonElement) {
-			generateButton.addEventListener("click", generateRandomNumber);
+		if (generateButtonElement instanceof HTMLButtonElement) {
+			generateButtonElement.addEventListener("click", generateRandomNumber);
 		}
 	</script>
 
