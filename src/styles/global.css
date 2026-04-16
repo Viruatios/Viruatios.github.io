@@ -2,6 +2,7 @@ html {
 	background-color: #f1f5f9;
 	font-family: "Microsoft YaHei", sans-serif;
 	--mascot-color: #333333;
+	--theme-color: #0099ff;
 }
 
 body {
@@ -18,86 +19,7 @@ body {
 h1 {
 	margin: 1rem 0;
 	font-size: 2.5rem;
-	color: #0099ff;
-}
-
-/*导航区*/
-.site-nav {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	gap: 0.5rem;
-}
-
-.menu {
-	background-color: #0d0950;
-	border: none;
-	color: #fff;
-	font-size: 1.2rem;
-	font-weight: bold;
-	padding: 5px 10px;
-	order: 1; /*在flex布局中，order属性定义了元素的排列顺序，数值越小越靠前。默认值为0。 */
-}
-
-.site-nav #themeToggle {
-	order: 2;
-	margin-left: auto; /*在flex布局中，margin-left: auto;会将元素推到容器的最右边。 */
-}
-
-.nav-links {
-	width: 100%;
-	display: none; /*默认隐藏*/
-	margin: 0;
-	order: 3;
-}
-
-.nav-links a {
-	display: block;
-	text-align: center;
-	padding: 10px 0;
-	text-decoration: none;
-	font-size: 1.2rem;
-	font-weight: bold;
-	text-transform: uppercase;
-	color: #0d0950;
-}
-
-.nav-links a:hover,
-.nav-links a:focus {
-	background-color: #ff9776;
-}
-
-:has(.menu[aria-expanded="true"]) .nav-links {
-	display: unset;
-}
-
-@media screen and (min-width: 636px) {
-	.site-nav {
-		flex-wrap: nowrap; /*强制不换行*/
-	}
-
-	.nav-links {
-		order: 2;
-		margin: 0 auto 0 2rem;
-		display: block;
-		position: static;
-		width: auto;
-		background: none;
-	}
-
-	.nav-links a {
-		display: inline-block;
-		padding: 15px 20px;
-	}
-
-	.menu {
-		display: none;
-	}
-
-	.site-nav #themeToggle {
-		order: 3;
-		margin-left: 0;
-	}
+	color: var(--theme-color);
 }
 
 /*暗色模式*/
@@ -105,26 +27,13 @@ html.dark {
 	background-color: #1f1f1f;
 	color: #fff;
 	--mascot-color: #fff;
+	--theme-color: skyblue;
 }
 
 .dark h1 {
 	margin: 1rem 0;
 	font-size: 2.5rem;
-	color: skyblue;
-}
-
-.dark .menu {
-	background-color: #fff;
-	color: #000;
-}
-
-.dark .nav-links a:hover,
-.dark .nav-links a:focus {
-	color: #0d0950;
-}
-
-.dark .nav-links a {
-	color: #fff;
+	color: var(--theme-color);
 }
 
 .dark a {

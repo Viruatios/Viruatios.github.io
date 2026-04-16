@@ -1,5 +1,7 @@
 ---
+const { width, height } = Astro.props;
 const mascotColor = "var(--mascot-color)";
+const strokeWidth = 7;
 ---
 
 <!-- Mascot for CuLoo's Homepage --><!-- Copyright (c) 2026 Viruatios. All rights reserved. -->
@@ -8,8 +10,8 @@ const mascotColor = "var(--mascot-color)";
 	data-culoo-mascot
 	xmlns="http://www.w3.org/2000/svg"
 	viewBox="0 0 200 200"
-	width="320"
-	height="320"
+	width={width}
+	height={height}
 >
 	<rect x="0" y="0" width="200" height="200" fill="none"></rect>
 
@@ -23,7 +25,7 @@ const mascotColor = "var(--mascot-color)";
 						class="orbit"
 						fill="none"
 						stroke={mascotColor}
-						stroke-width="6.25"
+						stroke-width={strokeWidth}
 						stroke-linecap="round"
 					>
 						<!-- 15°~45° -->
@@ -62,7 +64,7 @@ const mascotColor = "var(--mascot-color)";
             "
 						fill="none"
 						stroke={mascotColor}
-						stroke-width="6.25"
+						stroke-width={strokeWidth}
 					>
 					</polygon>
 
@@ -84,7 +86,7 @@ const mascotColor = "var(--mascot-color)";
 						class="eye-cross left"
 						fill="none"
 						stroke={mascotColor}
-						stroke-width="6.25"
+						stroke-width={strokeWidth}
 						stroke-linecap="round"
 						stroke-linejoin="round"
 					>
@@ -94,7 +96,7 @@ const mascotColor = "var(--mascot-color)";
 						class="eye-cross right"
 						fill="none"
 						stroke={mascotColor}
-						stroke-width="6.25"
+						stroke-width={strokeWidth}
 						stroke-linecap="round"
 						stroke-linejoin="round"
 					>
@@ -106,7 +108,7 @@ const mascotColor = "var(--mascot-color)";
 						<path
 							d="M 91.25 105 Q 95.625 110 100 105 Q 104.375 110 108.75 105"
 							stroke={mascotColor}
-							stroke-width="3.75"
+							stroke-width={strokeWidth / 1.667}
 							fill="none"
 							stroke-linecap="round"
 							stroke-linejoin="round"></path>
