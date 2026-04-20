@@ -16,6 +16,13 @@ body {
 	box-sizing: border-box;
 }
 
+/*初始隐藏吉祥物，直到它们准备好显示动画*/
+html.js [data-culoo-mascot][data-mascot-ready="false"],
+html.js [data-culoo-404-mascot][data-mascot-ready="false"] {
+	opacity: 0;
+	visibility: hidden;
+}
+
 h1 {
 	margin: 1rem 0;
 	font-size: 2.5rem;

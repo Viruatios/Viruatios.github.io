@@ -2,7 +2,42 @@ import gsap from "gsap";
 
 const mascots = document.querySelectorAll("[data-culoo-404-mascot]");
 
+// 吉祥物的初始加载完成后显示动画，通过这一过渡避免造成闪烁等显示错误
+const revealMascot = (mascot) => {
+    if (mascot.dataset.mascotReady === "true") {
+        return;
+    }
+
+    gsap.killTweensOf(mascot);
+    gsap.set(mascot, {
+        visibility: "visible",
+    });
+    gsap.fromTo(
+        mascot,
+        {
+            opacity: 0,
+            scale: 0.985,
+            transformOrigin: "center center",
+        },
+        {
+            opacity: 1,
+            scale: 1,
+            duration: 0.26,
+            ease: "power2.out",
+            clearProps: "opacity,transform",
+        },
+    );
+
+    mascot.dataset.mascotReady = "true";
+};
+
+// 确保首次过渡动画只在第一次加载时执行，之后直接显示
 mascots.forEach((mascot) => {
+    if (mascot.dataset.culoo404MascotBound === "true") {
+        revealMascot(mascot);
+        return;
+    }
+
     const normalEyes = mascot.querySelectorAll(".eye-normal");
     const crossEyes = mascot.querySelectorAll(".eye-cross");
     const exclamation = mascot.querySelector(".question-exclamation");
@@ -20,6 +55,7 @@ mascots.forEach((mascot) => {
         angerSymbol &&
         angerPaths.length
     ) {
+        mascot.dataset.culoo404MascotBound = "true";
         mascot.style.cursor = "pointer";
         let clickCount = 0;
         let isRageAnimating = false;
@@ -56,6 +92,8 @@ mascots.forEach((mascot) => {
                 strokeDashoffset: pathLength,
             });
         });
+
+        revealMascot(mascot);
 
         // 用 Z-X-Z 分解定义轴线角度，避免 SVG 环境下 rotate3d(x,y,0,angle) 的轴解释偏差。
         // 使用变量值代入式子计算，避免手算带来的误差影响，同时使得后续修改更方便
@@ -228,5 +266,7 @@ mascots.forEach((mascot) => {
 
             tl.restart();
         });
+    } else {
+        mascot.dataset.mascotReady = "true";
     }
 });

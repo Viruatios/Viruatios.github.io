@@ -586,7 +586,39 @@ const setState = (ctx, nextState) => {
 };
 
 // =========================
-// 6) 待机系统（眨眼）
+// 6) 首次加载完成后的过渡显示动画
+// =========================
+// 在吉祥物加载完成前先隐藏，加载完了再显示，从而实现一个过渡，避免出现闪烁等显示错误
+const revealMascot = (mascot) => {
+    if (mascot.dataset.mascotReady === "true") {
+        return;
+    }
+
+    gsap.killTweensOf(mascot);
+    gsap.set(mascot, {
+        visibility: "visible",
+    });
+    gsap.fromTo(
+        mascot,
+        {
+            opacity: 0,
+            scale: 0.985,
+            transformOrigin: "center center",
+        },
+        {
+            opacity: 1,
+            scale: 1,
+            duration: 0.26,
+            ease: "power2.out",
+            clearProps: "opacity,transform",
+        },
+    );
+
+    mascot.dataset.mascotReady = "true";
+};
+
+// =========================
+// 7) 待机系统（眨眼）
 // =========================
 // stopBlink: 负责停止“待机定时器 + 待机时间轴”。
 // 在点击动画触发前调用，实现“待机动画可被点击打断”。
@@ -707,11 +739,13 @@ const handleMascotClick = (ctx) => {
 // 单个 mascot 的初始化：防重复绑定、建立上下文、挂载点击、启动待机。
 const initMascot = (mascot) => {
     if (mascot.dataset.culooMascotBound === "true") {
+        revealMascot(mascot);
         return;
     }
 
     const parts = getMascotParts(mascot);
     if (!parts) {
+        mascot.dataset.mascotReady = "true";
         return;
     }
 
@@ -729,6 +763,7 @@ const initMascot = (mascot) => {
 
     resetToBaseline(parts);
     setState(ctx, MascotState.IDLE);
+    revealMascot(mascot);
 
     mascot.style.cursor = "pointer";
     mascot.dataset.culooMascotBound = "true";

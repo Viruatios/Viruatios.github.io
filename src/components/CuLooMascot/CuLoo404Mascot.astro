@@ -6,11 +6,14 @@
 <svg
 	class="culoo-404-mascot"
 	data-culoo-404-mascot
+	data-mascot-ready="false"
 	xmlns="http://www.w3.org/2000/svg"
 	viewBox="0 0 200 200"
 	width="320"
 	height="320"
 >
+	<!-- data-mascot-ready="false"，将吉祥物设置为“未准备好”状态，让 CSS 隐藏它 -->
+
 	<defs>
 		<!-- 主体六边形渐变 -->
 		<radialGradient id="hexGrad" cx="35%" cy="30%" r="75%">
@@ -99,6 +102,7 @@
 						stroke-width="6"
 						stroke-linecap="round"
 						stroke-linejoin="round"
+						opacity="0"
 					>
 						<path d="M 74 90 L 86 97 L 74 104"></path>
 					</g>
@@ -109,6 +113,7 @@
 						stroke-width="6"
 						stroke-linecap="round"
 						stroke-linejoin="round"
+						opacity="0"
 					>
 						<path d="M 126 90 L 114 97 L 126 104"></path>
 					</g>
@@ -166,7 +171,8 @@
 				font-size="36"
 				font-weight="700"
 				text-anchor="middle"
-				dominant-baseline="middle">!</text
+				dominant-baseline="middle"
+				opacity="0">!</text
 			>
 		</g>
 
@@ -192,6 +198,7 @@
 		stroke="#ef4444"
 		stroke-linecap="round"
 		stroke-linejoin="round"
+		opacity="0"
 	>
 		<!-- 愤怒的脸部表情 -->
 		<g stroke-width="6">
