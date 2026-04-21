@@ -1,24 +1,37 @@
+type Theme = "light" | "dark";
+
+type ViewTransitionLike = {
+    finished: Promise<void>;
+};
+
+type StartViewTransition = (
+    callback: () => void | Promise<void>,
+) => ViewTransitionLike;
+
 const rootElement = document.documentElement;
 const themeToggleButton = document.getElementById("themeToggle");
 const prefersReducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)",
 );
+const documentWithTransition = document as Document & {
+    startViewTransition?: StartViewTransition;
+};
 
-const theme = (() => {
-    const LocalStorageTheme = localStorage?.getItem("theme") ?? "";
-    if (["light", "dark"].includes(LocalStorageTheme)) {
-        return LocalStorageTheme;
+const theme: Theme = (() => {
+    const localStorageTheme = localStorage.getItem("theme") ?? "";
+    if (localStorageTheme === "light" || localStorageTheme === "dark") {
+        return localStorageTheme;
     }
 
     const media = window.matchMedia("(prefers-color-scheme: dark)");
     if (media.matches) {
         return "dark";
-    } else {
-        return "light";
     }
+
+    return "light";
 })();
 
-const applyTheme = (nextTheme) => {
+const applyTheme = (nextTheme: Theme): void => {
     if (nextTheme === "dark") {
         rootElement.classList.add("dark");
     } else {
@@ -34,13 +47,13 @@ if (theme === "light") {
     rootElement.classList.add("dark");
 }
 
-const getRippleEndRadius = (x, y) => {
+const getRippleEndRadius = (x: number, y: number): number => {
     const maxX = Math.max(x, window.innerWidth - x);
     const maxY = Math.max(y, window.innerHeight - y);
     return Math.hypot(maxX, maxY);
 };
 
-const getClickPosition = (event) => {
+const getClickPosition = (event: MouseEvent): { x: number; y: number } => {
     if (event.clientX !== 0 || event.clientY !== 0) {
         return { x: event.clientX, y: event.clientY };
     }
@@ -59,12 +72,15 @@ const getClickPosition = (event) => {
     };
 };
 
-const handleToggleClick = (event) => {
-    const nextTheme = rootElement.classList.contains("dark") ? "light" : "dark";
+const handleToggleClick = (event: MouseEvent): void => {
+    const nextTheme: Theme = rootElement.classList.contains("dark")
+        ? "light"
+        : "dark";
     const { x, y } = getClickPosition(event);
     const endRadius = getRippleEndRadius(x, y);
+    const startViewTransition = documentWithTransition.startViewTransition;
 
-    if (!document.startViewTransition || prefersReducedMotion.matches) {
+    if (!startViewTransition || prefersReducedMotion.matches) {
         applyTheme(nextTheme);
         return;
     }
@@ -73,7 +89,7 @@ const handleToggleClick = (event) => {
     rootElement.style.setProperty("--theme-click-y", `${y}px`);
     rootElement.style.setProperty("--theme-end-radius", `${endRadius}px`);
 
-    const transition = document.startViewTransition(() => {
+    const transition = startViewTransition(() => {
         applyTheme(nextTheme);
     });
 
@@ -84,4 +100,6 @@ const handleToggleClick = (event) => {
     });
 };
 
-themeToggleButton?.addEventListener("click", handleToggleClick);
+themeToggleButton?.addEventListener("click", (event) => {
+    handleToggleClick(event as MouseEvent);
+});

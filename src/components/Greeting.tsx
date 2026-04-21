@@ -2,11 +2,15 @@
 
 import { useState } from "react";
 
-export default function Greeting({ messages }) {
-	const getRandomMessage = () =>
-		messages[Math.floor(Math.random() * messages.length)];
+type GreetingProps = {
+	messages: string[];
+};
 
-	const getNextMessage = (current) => {
+export default function Greeting({ messages }: GreetingProps) {
+	const getRandomMessage = (): string =>
+		messages[Math.floor(Math.random() * messages.length)] ?? "";
+
+	const getNextMessage = (current?: string): string => {
 		if (messages.length <= 1) {
 			return current ?? "";
 		}
@@ -15,10 +19,10 @@ export default function Greeting({ messages }) {
 		while (next === current) {
 			next = getRandomMessage();
 		}
-		return next;
+		return next ?? "";
 	};
 
-	const [greeting, setGreeting] = useState(getNextMessage());
+	const [greeting, setGreeting] = useState<string>(getNextMessage());
 
 	return (
 		<div>

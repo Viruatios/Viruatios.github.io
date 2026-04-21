@@ -1,11 +1,11 @@
 const desktopQuery = window.matchMedia("(min-width: 636px)");
 
-const normalizePath = (path) => {
+const normalizePath = (path: string | null | undefined): string => {
     const lower = (path || "/").toLowerCase();
     return lower.endsWith("/") ? lower : `${lower}/`;
 };
 
-const resolveCurrentPath = (path) => {
+const resolveCurrentPath = (path: string | null | undefined): string => {
     const normalized = normalizePath(path);
 
     if (normalized.startsWith("/posts/")) {
@@ -19,7 +19,11 @@ const resolveCurrentPath = (path) => {
     return normalized;
 };
 
-const setUnderlinePosition = (container, underline, activeLink) => {
+const setUnderlinePosition = (
+    container: HTMLElement,
+    underline: HTMLElement,
+    activeLink: HTMLAnchorElement,
+): void => {
     const containerRect = container.getBoundingClientRect();
     const activeRect = activeLink.getBoundingClientRect();
 
@@ -41,16 +45,16 @@ const setUnderlinePosition = (container, underline, activeLink) => {
     underline.style.height = "auto";
 };
 
-const initNavUnderline = () => {
-    const container = document.querySelector(".nav-links");
-    if (!(container instanceof HTMLElement)) {
+const initNavUnderline = (): void => {
+    const container = document.querySelector<HTMLElement>(".nav-links");
+    if (!container) {
         return;
     }
 
-    const links = Array.from(container.querySelectorAll("a"));
-    const underline = container.querySelector(".tab-underline");
+    const links = Array.from(container.querySelectorAll<HTMLAnchorElement>("a"));
+    const underline = container.querySelector<HTMLElement>(".tab-underline");
 
-    if (!(underline instanceof HTMLElement) || links.length === 0) {
+    if (!underline || links.length === 0) {
         return;
     }
 
@@ -65,7 +69,7 @@ const initNavUnderline = () => {
 
     let previousIndex = activeIndex;
 
-    const applyActive = (index) => {
+    const applyActive = (index: number): void => {
         activeIndex = index;
         links.forEach((link, linkIndex) => {
             if (linkIndex === index) {
@@ -94,7 +98,7 @@ const initNavUnderline = () => {
     });
 
     links.forEach((link, index) => {
-        link.addEventListener("click", (event) => {
+        link.addEventListener("click", (event: MouseEvent) => {
             if (
                 event.defaultPrevented ||
                 event.metaKey ||

@@ -1,9 +1,14 @@
 import gsap from "gsap";
 
-const mascots = document.querySelectorAll("[data-culoo-404-mascot]");
+type Point = {
+    x: number;
+    y: number;
+};
+
+const mascots = document.querySelectorAll<SVGSVGElement>("[data-culoo-404-mascot]");
 
 // 吉祥物的初始加载完成后显示动画，通过这一过渡避免造成闪烁等显示错误
-const revealMascot = (mascot) => {
+const revealMascot = (mascot: SVGSVGElement): void => {
     if (mascot.dataset.mascotReady === "true") {
         return;
     }
@@ -38,13 +43,13 @@ mascots.forEach((mascot) => {
         return;
     }
 
-    const normalEyes = mascot.querySelectorAll(".eye-normal");
-    const crossEyes = mascot.querySelectorAll(".eye-cross");
-    const exclamation = mascot.querySelector(".question-exclamation");
-    const shakeLayer = mascot.querySelector(".shake-layer");
-    const mascotScene = mascot.querySelector(".mascot-scene");
-    const angerSymbol = mascot.querySelector(".anger-symbol");
-    const angerPaths = mascot.querySelectorAll(".anger-symbol path");
+    const normalEyes = mascot.querySelectorAll<SVGGElement>(".eye-normal");
+    const crossEyes = mascot.querySelectorAll<SVGGElement>(".eye-cross");
+    const exclamation = mascot.querySelector<SVGGElement>(".question-exclamation");
+    const shakeLayer = mascot.querySelector<SVGGElement>(".shake-layer");
+    const mascotScene = mascot.querySelector<SVGGElement>(".mascot-scene");
+    const angerSymbol = mascot.querySelector<SVGGElement>(".anger-symbol");
+    const angerPaths = mascot.querySelectorAll<SVGPathElement>(".anger-symbol path");
 
     if (
         normalEyes.length &&
@@ -97,12 +102,12 @@ mascots.forEach((mascot) => {
 
         // 用 Z-X-Z 分解定义轴线角度，避免 SVG 环境下 rotate3d(x,y,0,angle) 的轴解释偏差。
         // 使用变量值代入式子计算，避免手算带来的误差影响，同时使得后续修改更方便
-        const center = { x: 100, y: 100 };
+        const center: Point = { x: 100, y: 100 };
         const baseTiltDeg = 6;
-        const axisPointA = { x: 100, y: 50 };
-        const axisPointB = { x: 100, y: 150 };
+        const axisPointA: Point = { x: 100, y: 50 };
+        const axisPointB: Point = { x: 100, y: 150 };
 
-        const rotateAround = (point, pivot, degrees) => {
+        const rotateAround = (point: Point, pivot: Point, degrees: number): Point => {
             const rad = (degrees * Math.PI) / 180;
             const cos = Math.cos(rad);
             const sin = Math.sin(rad);
@@ -129,7 +134,7 @@ mascots.forEach((mascot) => {
 
         // 定义状态对象，将旋转动画分为明确的两个部分以解决只会一侧旋转的bug
         const state = { angle: 0 };
-        const updateTransform = () => {
+        const updateTransform = (): void => {
             // 加入 perspective 会让 SVG 在正负角度下呈现大小差异，从而真正区分两侧
             shakeLayer.style.transform = `translate(100px, 100px) perspective(800px) rotate(${axisLocalAngleDeg}deg) rotateX(${state.angle}deg) rotate(${-axisLocalAngleDeg}deg) translate(-100px, -100px)`;
         };

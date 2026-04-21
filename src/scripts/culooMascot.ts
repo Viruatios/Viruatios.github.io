@@ -1,6 +1,64 @@
 import gsap from "gsap";
 
 // =========================
+// 0) 全局变量与类型定义
+// =========================
+// 在此处定义全局类型和变量，确保在模块内任何位置都可以访问到这些定义，同时也方便后续维护和扩展。
+// 这可以避免any类型的使用，提升代码的类型安全性和可读性。
+type MascotTimeline = gsap.core.Timeline;
+type MascotTimerHandle = ReturnType<typeof window.setTimeout>;
+
+type MascotDomParts = {
+    faceLayer: SVGGraphicsElement;
+    faceLayerRotate: SVGGraphicsElement;
+    faceLayerTranslate: SVGGraphicsElement;
+    faceLayerScale: SVGGraphicsElement;
+    outerLayer: SVGGraphicsElement;
+    outerLayerRotate: SVGGraphicsElement;
+    outerLayerTranslate: SVGGraphicsElement;
+    outerLayerScale: SVGGraphicsElement;
+    orbit: SVGGraphicsElement;
+    orbitPaths: SVGPathElement[];
+    hexagonBody: SVGGraphicsElement;
+    normalEyes: SVGGraphicsElement[];
+    normalEyeEllipses: SVGEllipseElement[];
+    crossEyes: SVGGraphicsElement[];
+    mouth: SVGPathElement;
+    blush: SVGEllipseElement[];
+};
+
+type VariantBuildArgs = {
+    parts: MascotDomParts;
+    mascot: SVGSVGElement;
+};
+
+type MascotVariant = {
+    name: string;
+    weight: number;
+    cooldownMs: number;
+    lastPlayedAt: number;
+    create: (args: VariantBuildArgs) => MascotTimeline;
+};
+
+type MascotRuntimeContext = {
+    mascot: SVGSVGElement;
+    parts: MascotDomParts;
+    state: MascotStateName;
+    clickHistory: number[];
+    lastPlayedName: string | null;
+    currentTimeline: MascotTimeline | null;
+    variantRegistry: MascotVariant[];
+    blinkTimer: MascotTimerHandle | null;
+    blinkTimeline: MascotTimeline | null;
+};
+
+declare global {
+    interface Window {
+        __culooMascotFrameworkBootstrapped__?: boolean;
+    }
+}
+
+// =========================
 // 1) 状态机与全局阈值
 // =========================
 // IDLE: 可响应点击，允许待机眨眼
@@ -12,32 +70,53 @@ const MascotState = Object.freeze({
     RAGE_LOCKED: "RAGE_LOCKED",
 });
 
+type MascotStateName = (typeof MascotState)[keyof typeof MascotState];
+
 const RAGE_CLICK_THRESHOLD = 4;
 const RAGE_CLICK_WINDOW_MS = 1800;
 
-const toArray = (list) => Array.from(list ?? []);
+const toArray = <T>(list: ArrayLike<T> | null | undefined): T[] =>
+    Array.from(list ?? []);
 
 // =========================
 // 2) 元素采集与合法性检查
 // =========================
 // 只要关键元素缺失就返回 null，避免后续 timeline 对空节点操作导致异常。
-const getMascotParts = (mascot) => {
-    const faceLayer = mascot.querySelector(".face-layer");
-    const faceLayerRotate = mascot.querySelector(".face-layer-rotate");
-    const faceLayerTranslate = mascot.querySelector(".face-layer-translate");
-    const faceLayerScale = mascot.querySelector(".face-layer-scale");
-    const outerLayer = mascot.querySelector(".outer-layer");
-    const outerLayerRotate = mascot.querySelector(".outer-layer-rotate");
-    const outerLayerTranslate = mascot.querySelector(".outer-layer-translate");
-    const outerLayerScale = mascot.querySelector(".outer-layer-scale");
-    const orbit = mascot.querySelector(".orbit");
-    const orbitPaths = toArray(mascot.querySelectorAll(".orbit path"));
-    const hexagonBody = mascot.querySelector(".hexagon-body");
-    const normalEyes = toArray(mascot.querySelectorAll(".eye-normal"));
-    const normalEyeEllipses = toArray(mascot.querySelectorAll(".eye-normal ellipse"));
-    const crossEyes = toArray(mascot.querySelectorAll(".eye-cross"));
-    const mouth = mascot.querySelector(".mouth path");
-    const blush = toArray(mascot.querySelectorAll(".blush ellipse"));
+const getMascotParts = (mascot: SVGSVGElement): MascotDomParts | null => {
+    const faceLayer = mascot.querySelector<SVGGraphicsElement>(".face-layer");
+    const faceLayerRotate = mascot.querySelector<SVGGraphicsElement>(
+        ".face-layer-rotate",
+    );
+    const faceLayerTranslate = mascot.querySelector<SVGGraphicsElement>(
+        ".face-layer-translate",
+    );
+    const faceLayerScale = mascot.querySelector<SVGGraphicsElement>(
+        ".face-layer-scale",
+    );
+    const outerLayer = mascot.querySelector<SVGGraphicsElement>(".outer-layer");
+    const outerLayerRotate = mascot.querySelector<SVGGraphicsElement>(
+        ".outer-layer-rotate",
+    );
+    const outerLayerTranslate = mascot.querySelector<SVGGraphicsElement>(
+        ".outer-layer-translate",
+    );
+    const outerLayerScale = mascot.querySelector<SVGGraphicsElement>(
+        ".outer-layer-scale",
+    );
+    const orbit = mascot.querySelector<SVGGraphicsElement>(".orbit");
+    const orbitPaths = toArray(mascot.querySelectorAll<SVGPathElement>(".orbit path"));
+    const hexagonBody = mascot.querySelector<SVGGraphicsElement>(".hexagon-body");
+    const normalEyes = toArray(
+        mascot.querySelectorAll<SVGGraphicsElement>(".eye-normal"),
+    );
+    const normalEyeEllipses = toArray(
+        mascot.querySelectorAll<SVGEllipseElement>(".eye-normal ellipse"),
+    );
+    const crossEyes = toArray(
+        mascot.querySelectorAll<SVGGraphicsElement>(".eye-cross"),
+    );
+    const mouth = mascot.querySelector<SVGPathElement>(".mouth path");
+    const blush = toArray(mascot.querySelectorAll<SVGEllipseElement>(".blush ellipse"));
 
     if (
         !faceLayer ||
@@ -80,7 +159,7 @@ const getMascotParts = (mascot) => {
 };
 
 // 收集所有会被动画改写的节点，便于统一 kill / reset。
-const getAnimatableElements = (parts) => {
+const getAnimatableElements = (parts: MascotDomParts): gsap.TweenTarget[] => {
     return [
         parts.faceLayer,
         parts.faceLayerRotate,
@@ -105,7 +184,7 @@ const getAnimatableElements = (parts) => {
 // 3) 基线重置（Baseline Reset）
 // =========================
 // 原理：任何新动画开始前都先回到统一初始姿态，避免属性残留叠加。
-const resetToBaseline = (parts) => {
+const resetToBaseline = (parts: MascotDomParts): void => {
     const animatableElements = getAnimatableElements(parts);
 
     gsap.killTweensOf(animatableElements);
@@ -222,7 +301,7 @@ const resetToBaseline = (parts) => {
 // 4) 动画池（Registry）
 // =========================
 // 每个条目是“可构建的动画方案”：name / weight / cooldownMs / create。
-const createVariantRegistry = () => {
+const createVariantRegistry = (): MascotVariant[] => {
     return [
         // VariantA: 害羞扭头 + 外层加速自转 + 眼睛切换
         {
@@ -230,7 +309,7 @@ const createVariantRegistry = () => {
             weight: 3,
             cooldownMs: 0,
             lastPlayedAt: -Infinity,
-            create: ({ parts }) => {
+            create: ({ parts }: VariantBuildArgs) => {
                 const tl = gsap.timeline({
                     paused: true,
                     defaults: { ease: "power2.inOut" },
@@ -352,7 +431,7 @@ const createVariantRegistry = () => {
             weight: 3,
             cooldownMs: 0,
             lastPlayedAt: -Infinity,
-            create: ({ parts }) => {
+            create: ({ parts }: VariantBuildArgs) => {
                 const tl = gsap.timeline({
                     paused: true,
                     defaults: { ease: "power2.out" },
@@ -439,7 +518,7 @@ const createVariantRegistry = () => {
             weight: 3,
             cooldownMs: 0,
             lastPlayedAt: -Infinity,
-            create: ({ parts }) => {
+            create: ({ parts }: VariantBuildArgs) => {
                 const tl = gsap.timeline({
                     paused: true,
                 });
@@ -541,7 +620,11 @@ const createVariantRegistry = () => {
 // 1. 先过滤掉冷却中方案
 // 2. 再尽量避开上一轮方案（防连续重复）
 // 3. 对候选集按权重抽样
-const pickNextVariant = (registry, lastPlayedName, now) => {
+const pickNextVariant = (
+    registry: MascotVariant[],
+    lastPlayedName: string | null,
+    now: number,
+): MascotVariant | null => {
     const byCooldown = registry.filter((variant) => now - variant.lastPlayedAt >= variant.cooldownMs);
     const notLastPlayed = byCooldown.filter((variant) => variant.name !== lastPlayedName);
     const candidates = notLastPlayed.length ? notLastPlayed : byCooldown;
@@ -564,7 +647,7 @@ const pickNextVariant = (registry, lastPlayedName, now) => {
 };
 
 // 高优先级动画占位实现，后续可以替换为更复杂版本。
-const createRageTimeline = ({ parts }) => {
+const createRageTimeline = ({ parts }: VariantBuildArgs): MascotTimeline => {
     const tl = gsap.timeline({
         paused: true,
         defaults: { ease: "power2.inOut" },
@@ -580,7 +663,7 @@ const createRageTimeline = ({ parts }) => {
 };
 
 // 将状态同步到 data- 属性，方便调试与样式扩展。
-const setState = (ctx, nextState) => {
+const setState = (ctx: MascotRuntimeContext, nextState: MascotStateName): void => {
     ctx.state = nextState;
     ctx.mascot.dataset.mascotState = nextState;
 };
@@ -589,7 +672,7 @@ const setState = (ctx, nextState) => {
 // 6) 首次加载完成后的过渡显示动画
 // =========================
 // 在吉祥物加载完成前先隐藏，加载完了再显示，从而实现一个过渡，避免出现闪烁等显示错误
-const revealMascot = (mascot) => {
+const revealMascot = (mascot: SVGSVGElement): void => {
     if (mascot.dataset.mascotReady === "true") {
         return;
     }
@@ -622,8 +705,12 @@ const revealMascot = (mascot) => {
 // =========================
 // stopBlink: 负责停止“待机定时器 + 待机时间轴”。
 // 在点击动画触发前调用，实现“待机动画可被点击打断”。
-const stopBlink = (ctx) => {
-    clearTimeout(ctx.blinkTimer);
+const stopBlink = (ctx: MascotRuntimeContext): void => {
+    if (ctx.blinkTimer !== null) {
+        clearTimeout(ctx.blinkTimer);
+        ctx.blinkTimer = null;
+    }
+
     if (ctx.blinkTimeline) {
         ctx.blinkTimeline.kill();
         ctx.blinkTimeline = null;
@@ -632,9 +719,9 @@ const stopBlink = (ctx) => {
 
 // scheduleBlink: 使用 setTimeout 每 3 秒触发一次待机动作。
 // onComplete 里再次调度，实现“递归式循环待机”。
-const scheduleBlink = (ctx) => {
+const scheduleBlink = (ctx: MascotRuntimeContext): void => {
     stopBlink(ctx);
-    ctx.blinkTimer = setTimeout(() => {
+    ctx.blinkTimer = window.setTimeout(() => {
         if (ctx.state !== MascotState.IDLE) return;
 
         ctx.blinkTimeline = gsap.timeline({
@@ -652,7 +739,7 @@ const scheduleBlink = (ctx) => {
 };
 
 // 只保留窗口期内的点击时间戳，用于判断是否触发 rage。
-const pruneClickHistory = (ctx, now) => {
+const pruneClickHistory = (ctx: MascotRuntimeContext, now: number): void => {
     ctx.clickHistory = ctx.clickHistory.filter((time) => now - time <= RAGE_CLICK_WINDOW_MS);
 };
 
@@ -660,10 +747,14 @@ const pruneClickHistory = (ctx, now) => {
 // 7) 播放控制：普通动画 / rage
 // =========================
 // 播放顺序：先停待机 -> 基线重置 -> 状态切换 -> 播放 -> 完成后恢复 IDLE 并重启待机。
-const playVariant = (ctx, variant, now) => {
+const playVariant = (
+    ctx: MascotRuntimeContext,
+    variant: MascotVariant,
+    now: number,
+): void => {
     stopBlink(ctx);
     resetToBaseline(ctx.parts);
-    let timeline = null;
+    let timeline: MascotTimeline | null = null;
 
     try {
         timeline = variant.create({ parts: ctx.parts, mascot: ctx.mascot });
@@ -691,7 +782,7 @@ const playVariant = (ctx, variant, now) => {
     timeline.play(0);
 };
 
-const playRage = (ctx) => {
+const playRage = (ctx: MascotRuntimeContext): void => {
     stopBlink(ctx);
     resetToBaseline(ctx.parts);
     setState(ctx, MascotState.RAGE_LOCKED);
@@ -714,7 +805,7 @@ const playRage = (ctx) => {
 // 8) 点击入口（状态机守卫）
 // =========================
 // 仅 IDLE 可接收点击；播放期间直接 return，保证“不可打断”。
-const handleMascotClick = (ctx) => {
+const handleMascotClick = (ctx: MascotRuntimeContext): void => {
     if (ctx.state !== MascotState.IDLE) {
         return;
     }
@@ -737,7 +828,7 @@ const handleMascotClick = (ctx) => {
 };
 
 // 单个 mascot 的初始化：防重复绑定、建立上下文、挂载点击、启动待机。
-const initMascot = (mascot) => {
+const initMascot = (mascot: SVGSVGElement): void => {
     if (mascot.dataset.culooMascotBound === "true") {
         revealMascot(mascot);
         return;
@@ -749,7 +840,7 @@ const initMascot = (mascot) => {
         return;
     }
 
-    const ctx = {
+    const ctx: MascotRuntimeContext = {
         mascot,
         parts,
         state: MascotState.IDLE,
@@ -775,8 +866,8 @@ const initMascot = (mascot) => {
 };
 
 // 批量初始化页面中的 mascot 实例。
-const initCuLooMascots = () => {
-    const mascots = document.querySelectorAll("[data-culoo-mascot]");
+const initCuLooMascots = (): void => {
+    const mascots = document.querySelectorAll<SVGSVGElement>("[data-culoo-mascot]");
     mascots.forEach(initMascot);
 };
 
