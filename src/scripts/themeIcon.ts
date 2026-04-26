@@ -78,9 +78,8 @@ const handleToggleClick = (event: MouseEvent): void => {
         : "dark";
     const { x, y } = getClickPosition(event);
     const endRadius = getRippleEndRadius(x, y);
-    const startViewTransition = documentWithTransition.startViewTransition;
 
-    if (!startViewTransition || prefersReducedMotion.matches) {
+    if (!documentWithTransition.startViewTransition || prefersReducedMotion.matches) {
         applyTheme(nextTheme);
         return;
     }
@@ -89,7 +88,7 @@ const handleToggleClick = (event: MouseEvent): void => {
     rootElement.style.setProperty("--theme-click-y", `${y}px`);
     rootElement.style.setProperty("--theme-end-radius", `${endRadius}px`);
 
-    const transition = startViewTransition(() => {
+    const transition = documentWithTransition.startViewTransition(() => {
         applyTheme(nextTheme);
     });
 

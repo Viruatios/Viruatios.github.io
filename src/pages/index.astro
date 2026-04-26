@@ -1,5 +1,5 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
+import EntryLayout from "../layouts/EntryLayout.astro";
 
 import Greeting from "../components/Greeting";
 import CuLooMascot from "../components/CuLooMascot/CuLooMascot.astro";
@@ -7,27 +7,28 @@ import CuLooMascot from "../components/CuLooMascot/CuLooMascot.astro";
 const pageTitle = "CuLoo's Homepage";
 ---
 
-<BaseLayout pageTitle={pageTitle}>
-	<h2>Do whatever CuLoo wants to do!</h2>
-	<p>学习Astro入门教程构建的版本。</p>
+<EntryLayout pageTitle={pageTitle}>
+	<section class="entry-content" aria-label="首页主内容">
+		<div class="entry-mascot" aria-hidden="true">
+			<CuLooMascot width="320" height="320" />
+		</div>
 
-	<Greeting
-		client:load
-		messages={[
-			"Hej",
-			"Hallo",
-			"Hola",
-			"Habari",
-			"Hi",
-			"Hello",
-			"Howdy",
-			"Hey there",
-		]}
-	/>
-	<CuLooMascot
-		class="mascot-icon"
-		title="culoo mascot"
-		width="320"
-		height="320"
-	/>
-</BaseLayout>
+		<h1 class="entry-title">CuLoo's Homepage</h1>
+
+		<div class="entry-greeting">
+			<Greeting
+				client:load
+				messages={[
+					"Hej",
+					"Hallo",
+					"Hola",
+					"Habari",
+					"Hi",
+					"Hello",
+					"Howdy",
+					"Hey there",
+				]}
+			/>
+		</div>
+	</section>
+</EntryLayout>
