@@ -31,7 +31,7 @@ jobs:
         run: npm ci
 
       - name: Type Check
-        run: npx tsc --noEmit
+        run: npx astro check
 
       - name: Build with Astro
         run: npm run build
