@@ -73,6 +73,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Type Check
+        run: npx tsc --noEmit
+
       - name: Build with Astro
         run: npm run build
 
