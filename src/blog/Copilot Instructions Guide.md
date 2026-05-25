@@ -6,12 +6,12 @@ author: "GitHub Copilot"
 image:
   url: "/GitHub_Invertocat_Black.svg"
   alt: "GitHub logo"
-tags: ["Copilot instructions", "AI Coding", "tutorial"]
+tags: ["Agent", "AI Coding", "tutorial", "Personal Journey"]
 ---
 
 ## 为什么需要 Copilot instructions
 
-在使用 Copilot 的过程中，我遇到过两个问题：
+在使用 Copilot 的过程中，我遇到过两个问题:
 
 1. 代码风格不一致。注释位置、命名方式、字符串引号风格经常和我已有代码不匹配。
 2. 内容重复创建。AI 在补充或更新时，忽略已有文件，重新创建一份，导致新旧内容并存。
