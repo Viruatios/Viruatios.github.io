@@ -9,7 +9,7 @@ image:
 tags: ["AI Coding", "Workflow", "Agent", "tutorial"]
 ---
 
-在之前《[Copilot Instructions 让 AI 更了解你的项目](./Copilot%20Instructions%20Guide.md)》中，我们探讨了如何通过编写项目规则，让 AI 从“通用助手”变成“懂你项目的协作者”。这解决了 AI 单次回答准确率的问题。但随着 AI 编码能力的发展以及各类 Agent 模式的涌现，我们对 AI 的期望已经不仅仅是“帮我补全这段代码”，而是“以系统性的方式帮我完成任务”。
+在之前《[Copilot Instructions 让 AI 更了解你的项目](/posts/copilot-instructions-guide/)》中，我们探讨了如何通过编写项目规则，让 AI 从“通用助手”变成“懂你项目的协作者”。这解决了 AI 单次回答准确率的问题。但随着 AI 编码能力的发展以及各类 Agent 模式的涌现，我们对 AI 的期望已经不仅仅是“帮我补全这段代码”，而是“以系统性的方式帮我完成任务”。
 
 今天，结合社区（如 OpenAI Codex 团队）的实践经验，我们来聊聊在项目指引（Instructions）的基础上，如何更深入、长久地管理 Copilot 工作流。
 
