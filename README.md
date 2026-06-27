@@ -45,14 +45,6 @@ npm run dev
 - GitHub Pages 工作流见 `.github/workflows/deploy.yml`
 - 核心流程：`npm ci` -> `npm run build` -> 上传 `dist` -> `actions/deploy-pages`
 
-## Copilot 协作说明
-
-- 项目级 Copilot 指令在 `.github/copilot-instructions.md`。
-- 当目录结构、关键脚本或约定变化时，请同步更新：
-  - `.github/copilot-instructions.md`
-  - `README.md`
-  - `src/blog/Copilot Instructions Guide.md`
-
 相关学习资料：
 
 - [Astro 文档：搭建博客教程](https://docs.astro.build/zh-cn/tutorial/0-introduction/)
