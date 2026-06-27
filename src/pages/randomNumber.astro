@@ -42,6 +42,9 @@ const pageTitle = "随机数生成器";
 			time: "时间戳",
 			changing: "变化值",
 		};
+		type SeedSource = keyof typeof seedSourceLabelMap;
+		const isSeedSource = (value: string): value is SeedSource =>
+			Object.hasOwn(seedSourceLabelMap, value);
 		const changingSeedElement = document.getElementById("changing-seed");
 		const minNumberInputElement = document.getElementById("min-number");
 		const maxNumberInputElement = document.getElementById("max-number");
@@ -60,10 +63,9 @@ const pageTitle = "随机数生成器";
 
 		/**
 		 * 基于 Mulberry32 的轻量级可复现伪随机算法（非安全用途）。
-		 * @param {number} seed
-		 * @returns {number} [0, 1) 区间内的浮点数
+		 * @returns [0, 1) 区间内的浮点数
 		 */
-		const seededRandom = (seed) => {
+		const seededRandom = (seed: number): number => {
 			let t = seed >>> 0;
 			t += 0x6d2b79f5;
 			let r = Math.imul(t ^ (t >>> 15), t | 1);
@@ -103,11 +105,12 @@ const pageTitle = "随机数生成器";
 
 			errorMessageElement.textContent = "";
 
-			const useTimeSeed = seedSourceSelectElement.value === "time";
+			const selectedSeedSource = seedSourceSelectElement.value;
+			const useTimeSeed = selectedSeedSource === "time";
 			const seed = useTimeSeed ? Date.now() : changingSeed;
-			const seedLabel =
-				seedSourceLabelMap[seedSourceSelectElement.value] ??
-				seedSourceSelectElement.value;
+			const seedLabel = isSeedSource(selectedSeedSource)
+				? seedSourceLabelMap[selectedSeedSource]
+				: selectedSeedSource;
 			const randomValue = seededRandom(seed);
 			const value = Math.floor(randomValue * (max - min + 1)) + min;
 
